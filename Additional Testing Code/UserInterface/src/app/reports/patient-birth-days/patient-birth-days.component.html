@@ -1,0 +1,57 @@
+<h3>Patient Birthday</h3>
+<div class="row">
+    <form [formGroup]="form" role="form">
+        <div class="form-group col-sm-3 col-md-3 col-lg-3">
+            <label class="control-label">Practices<span class="text-danger">*</span></label>
+            <select class="form-control" [(ngModel)]="request.practiceCode" formControlName="practiceCode">
+                <option [ngValue]=[null]>Select Practice</option>
+                <option *ngFor="let c of practicesList" value={{c.Id}}>{{c.Name}}</option>
+            </select>
+        </div>
+        <div class="form-group col-sm-3 col-md-3 col-lg-3">
+            <label class="control-label">Select Month<span class="text-danger">*</span></label>
+            <input class="form-control" type="month" pattern="[0-9]{4}-[0-9]{2}" formControlName="month"
+                [(ngModel)]="request.month" />
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <button type="button" type="submit" class="btn btn-primary pull-right btn-sm"
+            (click)="onSearch()">Search</button>
+        <button type="button" class="btn btn-white pull-right ml-2 btn-sm" (click)="onClear()">Clear</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 pt-20">
+        <div *ngIf="isSearchInitiated">
+            <table class="table table-hover table-striped table-bordered dataTable datatablePatientBirthDays"
+                width="100%">
+                <thead>
+                    <tr>
+                        <th>Patient Account</th>
+                        <th>Patient Name</th>
+                        <th>Date of Birth</th>
+                        <th>Age</th>
+                        <th>Home Phone</th>
+                        <th>Insurance Name</th>
+                        <th>Recent DOS</th>
+                        <th>Provider</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of data">
+                        <td>{{row.PATIENTID}}</td>
+                        <td>{{row.PATIENTNAMEFULLLASTFIRST}}</td>
+                        <td>{{row.PATIENTDOBFULL | date:'MM/dd/yyyy'}}</td>
+                        <td>{{row.PATIENTAGE}}</td>
+                        <td>{{row.HOME_PHONE}}</td>
+                        <td>{{row.POLICYINSURANCENAME}}</td>
+                        <td>{{row.PATIENTMOSTRECENTDOS | date:'MM/dd/yyyy'}}</td>
+                        <td>{{row.RENDERRINGPROVIDERNAMEFULL}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

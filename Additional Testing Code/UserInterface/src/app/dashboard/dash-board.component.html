@@ -1,0 +1,107 @@
+<div class="row" *ngIf="data">
+  <div class="col-sm-12 col-md-6" *ngIf="data && data.recentAgingSummary">
+    <canvas baseChart [datasets]="barChartData2" [labels]="barChartLabels2" [options]="barChartOptions2"
+      [legend]="barChartLegend2" [chartType]="barChartType2">
+    </canvas>
+    <div class="col-md-12" style="margin-top:20px">
+      <div class="panel panel-default">
+        <div class="panel-heading" (click)='onClickAgingByInsRow()' style="cursor: pointer;">
+          Aging by Insurance
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered" style="margin-top:16px">
+              <thead>
+                <tr>
+                  <th>Insurance Name</th>
+                  <th>0-30</th>
+                  <th>31-60</th>
+                  <th>61-90</th>
+                  <th>91-120</th>
+                  <th>121-150</th>
+                  <th>151-180</th>
+                  <th>180 Plus</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of data.recentAgingSummary">
+                  <td> {{p.Insurance}}</td>
+                  <td>${{p.C_0_30__Days_Balance_by_Claim_Date| number: '2.1-2'}}</td>
+                  <td>${{p.C_31_60__Days_Balance_by_Claim_Date | number: '2.1-2'}}</td>
+                  <td>${{p.C_61_90__Days_Balance_by_Claim_Date | number: '2.1-2'}}</td>
+                  <td>${{p.C_91_120__Days_Balance_by_Claim_Date | number: '2.1-2'}}</td>
+                  <td>${{p.C_121_150__Days_Balance_by_Claim_Date | number: '2.1-2'}}</td>
+                  <td>${{p.C_151_180__Days_Balance_by_Claim_Date | number: '2.1-2'}}</td>
+                  <td>${{p.C___180__Days_Balance_by_Claim_Date | number: '2.1-2'}}</td>
+                  <td>${{p.Total_Balance | number: '2.1-2'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6" *ngIf="data && data.recentChargesPayment">
+    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+      [legend]="lineChartLegend" [colors]="lineChartColors" [chartType]="lineChartType"></canvas>
+    <div class="col-md-12" style="margin-top:20px">
+      <div class="panel panel-default">
+        <div class="panel-heading" (click)='onClickCPAsRow()' style="cursor: pointer;">
+          CPA
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered" style="margin-top:16px">
+              <thead>
+                <tr>
+                  <th *ngFor="let column of cpaColumns">{{column}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of data.recentChargesPayment">
+                  <td *ngFor="let value of getObjectValues(row)">{{value}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6" *ngIf="data && data.agingDashboard">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [legend]="barChartLegend" [chartType]="barChartType">
+    </canvas>
+    <div class="col-md-12" style="margin-top:20px">
+      <div class="panel panel-default">
+        <div class="panel-heading" (click)="onClickAgingAnalysisRow()" style="cursor: pointer;">
+          Aging Analysis
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered" style="margin-top:16px">
+              <thead>
+                <tr>
+                  <th align="right">Aging Slot</th>
+                  <th align="right">Insurance</th>
+                  <th align="right">Patient</th>
+                  <th align="right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of data.agingDashboard">
+                  <td align="left">{{d.AGINGSLOT}}</td>
+                  <td align="left">${{d.INSURANCE | number: '2.1-2'}}</td>
+                  <td align="left">${{d.PATIENT | number: '2.1-2'}}</td>
+                  <td align="left">${{d.TOTAL | number: '2.1-2'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

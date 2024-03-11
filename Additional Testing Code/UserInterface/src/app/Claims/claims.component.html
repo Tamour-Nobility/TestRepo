@@ -1,0 +1,796 @@
+<!-- // Added by Pir Ubaid (USER STORY 204 : NPM ALERT ) -->
+<div class="modal fade"  bsModal #modalWindow="bs-modal" tabindex="-1" role="dialog"
+aria-labelledby="dialog-nested-name">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between;padding: 10px;">
+        <h2 style="font-weight: bold;">Alert</h2>
+        <button type="button" class="close" (click)="hide()">
+          <span aria-hidden="true" >X</span>
+        </button>
+      </div>
+      
+      <div class="modal-body" style="padding: 0px 10px 20px 10px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div >
+          <label>Priority:</label>
+            <span *ngIf="firstAlert?.Priority === 'L'"> Low</span>
+            <span *ngIf="firstAlert?.Priority === 'M'"> Medium</span>
+            <span *ngIf="firstAlert?.Priority === 'H'"> High</span>
+          </div>
+          
+
+          <div>
+           <LABEL>Created by:</LABEL> 
+           
+            {{ firstAlert?.Created_User | uppercase }}
+
+          </div>
+        </div>
+
+        <hr style="border-top: 1px solid#676a6c; font-weight: bold; margin-top: 10px;
+        margin-bottom: 10px;">
+
+         <div style="font-size: 18px;">
+          <p style="margin-bottom: 0; font-weight: bold;">Message</p>
+
+          <div style="overflow-wrap: break-word; font-size: 14px;
+          color: #000000;
+          margin-top: 3px;">{{ firstAlert?.AlertMessage }}</div>
+        </div>
+        
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-primary" style="width: 12%;" (click)="hide()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form [formGroup]="claimForm">
+    <div class="row" formGroupName="main">
+        <div class="col-lg-12">
+            <div class="pull-left">
+                <h3>
+                    <label class="control-label">Patient: <b>{{claimInfo.PatientLastName | titlecase}},
+                            {{claimInfo.PatientFirstName | titlecase}}</b></label>&nbsp;|&nbsp;<label
+                        class="control-label">Account
+                        #: <b>{{claimInfo.Patient_Account}}</b></label>&nbsp;|&nbsp;<label class="control-label">Claim
+                        #:
+                        <b>{{ClaimNumber}}</b></label>
+                </h3>
+            </div>
+            <div class="pull-right">
+
+                <a  data-toggle="modal" data-target="#claimsassignment"
+                ><i class="fa fa-pencil-square"></i>&nbsp;Claim Assignment&nbsp;</a>
+
+                <!-- <button class="btn btn-primary btn-sm mr-3" type="button" >Add to Batch</button>
+                <button class="btn btn-primary btn-sm mr-3" type="button" (click)="addtoScrubber()">Add to Scrubber</button> -->
+
+                <a (click)="resetNotes()" data-toggle="modal" data-target="#ClaimNotes"><i
+                        class="fa fa-pencil-square"></i>&nbsp;Claim Notes</a>
+                <a class="link" style="color: #2792ea; margin-left: 5px;" (click)="onGenerateHcfa(false)"><i
+                        class="fa fa-file-o"></i>&nbsp;View HCFA</a>
+                        
+            </div>
+            
+        </div>
+        <div class="col-lg-12">
+            <div class="checkbox m-r-xs pull-left">
+                <input type="checkbox" id="selfPay" [(ngModel)]="claimViewModel.ClaimModel.Is_Self_Pay"
+                    (click)="removeINS()" formControlName="selfPay">
+                <label for="selfPay" data-placement="bottom">
+                    Self Pay
+                </label>
+            </div>
+            <div class="pull-right claim-summary">
+                <span class="mr-10">Charges:&nbsp;${{claimViewModel.ClaimModel.Claim_Total}}</span>
+                <span class="mr-10"> Payments:&nbsp;${{claimViewModel.ClaimModel.Amt_Paid }}</span>
+                <!-- <span class="mr-10"> Pri. Ins.:&nbsp;${{claimViewModel.ClaimModel.Pri_Ins_Payment}}</span>
+                <span class="mr-10"> Sec. Ins.:&nbsp;${{claimViewModel.ClaimModel.Sec_Ins_Payment}}</span>
+                <span class="mr-10"> Other Ins.:&nbsp;${{claimViewModel.ClaimModel.Oth_Ins_Payment}}</span> -->
+                <span class="mr-10"> Insurance Paid:&nbsp;${{claimViewModel.ClaimModel.Pri_Ins_Payment +
+                    claimViewModel.ClaimModel.Sec_Ins_Payment + claimViewModel.ClaimModel.Oth_Ins_Payment}} </span>
+                <span class="mr-10"> Patient Paid:&nbsp;${{claimViewModel.ClaimModel.Patient_Payment}}</span>
+                <span class="mr-10"> Adjustments:&nbsp;${{claimViewModel.ClaimModel.Adjustment}}</span>
+                <span class="mr-10"> {{dueRespSide}}:&nbsp;${{claimViewModel.ClaimModel.Amt_Due}}</span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-3 from-group">
+            <label class="control-label">DOS<span class="text-danger">*</span></label>
+            <my-date-picker id="dos" [selDate]="selDOS" [placeholder]="placeholder"
+                (dateChanged)="onDateChanged($event,'DOS')" (blur)="formatDate($event)" [options]="dosDatePickerOptions" (keyup)="dateMask($event)"
+                formControlName="dos">
+            </my-date-picker>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Scan Date<span class="text-danger">*</span></label>
+            <my-date-picker id="dosScanD" [selDate]="selScanDate" [placeholder]="placeholder"
+                (dateChanged)="onDateChanged($event,'ScanDate')" (blur)="formatDate($event)" (keyup)="dateMask($event)"
+                [options]="scanDatePickerOptions" formControlName="scanDate">
+            </my-date-picker>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Claim Date</label>
+            <my-date-picker id="dosBD" [selDate]="selBillDate" [placeholder]="placeholder"
+                (dateChanged)="onDateChanged($event,'BillDate')" (blur)="formatDate($event)" [options]="{
+                    dateFormat: 'mm/dd/yyyy', height: '25px', width: '100%',
+                    componentDisabled: true
+                }" formControlName="claimDate">
+            </my-date-picker>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Location<span class="text-danger">*</span></label>
+            <select class="form-control" [(ngModel)]="claimViewModel.ClaimModel.Location_Code" id="LocationDrop"
+                formControlName="location">
+                <option value=0 disabled>Select Location</option>
+                <option *ngFor="let p of claimViewModel.PracticeLocationsList" value="{{p.Id}}">
+                    {{p.Name}}
+                </option>   
+            </select>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Rendering Phy <span class="text-danger">*</span> </label>
+            <select class="form-control" [(ngModel)]="claimViewModel.ClaimModel.Attending_Physician"
+                formControlName="rendPhy">
+                <option [ngValue]="null">Select Rendering Physician</option>
+                <option *ngFor="let p of claimViewModel.AttendingPhysiciansList"  value="{{p.Id}}"  [disabled]="!p.is_active" [ngStyle]="{'background-color':p.is_active === true ? 'none' : 'yellow' }" >
+                    <span [ngStyle]="{'color':p.is_active === true ? 'while' : '#000000' }">  {{ p.Name }} </span> <span *ngIf="p.is_active == false"> &nbsp; inactive</span>
+                </option>
+            </select>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Billing Phy<span class="text-danger">*</span></label>
+            <select class="form-control" [(ngModel)]="claimViewModel.ClaimModel.Billing_Physician" (change)="changeEvent($event.target.value)"
+                formControlName="billPhy">
+                <option [ngValue]="null" disabled>Select Billing Physician</option>
+                <option *ngFor="let p of claimViewModel.BillingPhysiciansList" value="{{p.Id}}"  [disabled]="!p.is_active" [ngStyle]="{'background-color':p.is_active === true ? 'none' : 'yellow' }">
+                    <span [ngStyle]="{'color':p.is_active === true ? 'while' : '#000000' }">  {{ p.Name }} </span> <span *ngIf="p.is_active == false"> &nbsp; inactive</span>
+                </option>
+            </select>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Referring Physician</label>
+            <select class="form-control" [(ngModel)]="claimViewModel.ClaimModel.Referring_Physician"
+                formControlName="refPhy">
+                <option [ngValue]="null">Select Referring Physician</option>
+                <option *ngFor="let p of claimViewModel.ReferralPhysiciansList" value="{{p.Id}}" [disabled]="p.In_Active == true" [ngStyle]="{'background-color':p.In_Active === true ? 'yellow' : 'none' }">
+                    <span [ngStyle]="{'color':p.In_Active == true ? 'red' : 'white' }"> {{ p.Name }} </span> <span *ngIf="p.In_Active == true"> &nbsp; inactive</span>
+                </option>
+            </select>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Supervising Physicians</label>
+            <select class="form-control" [(ngModel)]="claimViewModel.ClaimModel.Supervising_Physician"
+                formControlName="supPhy">
+                <option [ngValue]="null">Select Supervising Physician</option>
+                <option *ngFor="let p of claimViewModel.AttendingPhysiciansList" value="{{p.Id}}"  [disabled]="!p.is_active" [ngStyle]="{'background-color':p.is_active === true ? 'none' : 'yellow' }">
+                    <span [ngStyle]="{'color':p.is_active === true ? 'while' : '#000000' }">  {{ p.Name }} </span>  <span *ngIf="p.is_active == false"> &nbsp; inactive</span>
+                </option>
+            </select>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Referral #</label>
+            <input type="text" class="form-control" id="inpReferal"
+                [(ngModel)]="claimViewModel.ClaimModel.Referral_Number" formControlName="referral" maxlength="50">
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">PA #</label>
+            <!-- Added By Pir Ubaid (USER STORY : 205 Prior Authorization) -->
+            <input list="paOptions" class="form-control" [(ngModel)]="claimViewModel.ClaimModel.PA_Number" formControlName="pa">
+            <datalist id="paOptions"  >
+              <option *ngFor="let option of PrirAuthorization" [value]="option"></option>
+            </datalist>
+          </div>
+<div class="col-lg-3 form-group">
+    <label class="control-label">Additional Claim Info.(NCT) <span *ngIf="procedureCode" title="Additional info cannot be empty when CPT code is 0275T" class="text-danger"> *</span></label>
+    <input type="text"
+    style="text-transform:uppercase"  class="form-control"[ngClass]="{
+        'validationError': (procedureCode && (claimViewModel.ClaimModel.Additional_Claim_Info == null)) ||
+                           (CTValue && (claimViewModel.ClaimModel.Additional_Claim_Info != null ))
+      }" [(ngModel)]="claimViewModel.ClaimModel.Additional_Claim_Info" id="additionalClaimInfo"
+        formControlName="additionalClaimInfo" maxlength="80" autocomplete="off" >
+</div>
+
+        <div class="clearfix"></div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Patient Status</label>
+            <select class="form-control" name="account" [(ngModel)]="claimViewModel.ClaimModel.Pat_Status"
+                (change)="claimStatus_Changed('PA');" (blur)="handlePatientStatusD($event)"   formControlName="patientStatus">
+                <option>N</option>
+                <option>B</option>
+                <option>R</option>
+                <option>P</option>
+                <option>W</option>
+                <option>D</option>
+            </select>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Primary Status</label>
+            <select class="form-control" name="account" id="ddlPriStatus"
+                [(ngModel)]="claimViewModel.ClaimModel.Pri_Status" (change)="claimStatus_Changed('P');"
+                formControlName="priStatus">
+                <option>N</option>
+                <option>B</option>
+                <option>R</option>
+                <option>P</option>
+                <option>W</option>
+            </select>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Secondary Status</label>
+            <select class="form-control" name="account" id="ddlSecStatus"
+                [(ngModel)]="claimViewModel.ClaimModel.Sec_Status" (change)="claimStatus_Changed('S'); "
+                formControlName="secStatus">
+                <option>N</option>
+                <option>B</option>
+                <option>R</option>
+                <option>P</option>
+                <option>W</option>
+            </select>
+        </div>
+        <div class="col-lg-3 form-group">
+            <label class="control-label">Other Status</label>
+            <select class="form-control" name="account" id="ddlOthStatus"
+                [(ngModel)]="claimViewModel.ClaimModel.Oth_Status" (change)="claimStatus_Changed('O'); "
+                formControlName="othStatus">
+                <option>N</option>
+                <option>B</option>
+                <option>R</option>
+                <option>P</option>
+                <option>W</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row" formGroupName="correctedClaimGroup" *ngIf="!isNewClaim()">
+        <div class="col-lg-3">
+            <div class="checkbox m-r-xs pull-left">
+                <input type="checkbox" id="Is_Corrected" [(ngModel)]="claimViewModel.ClaimModel.Is_Corrected"
+                    formControlName="Is_Corrected" (change)="onChangeCorrectedClaim()">
+                <label for="Is_Corrected" data-placement="bottom">
+                    Corrected Claim
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-3 form-group" *ngIf="claimViewModel.ClaimModel.Is_Corrected">
+            <label class="control-label">ICN<span class="text-danger">*</span></label>
+            <input type="text" autocomplete="off" class="form-control" id="ICN_Number"
+                [(ngModel)]="claimViewModel.ClaimModel.ICN_Number" formControlName="ICN_Number" maxlength="100">
+        </div>
+        <div class="col-lg-3 form-group" *ngIf="claimViewModel.ClaimModel.Is_Corrected">
+            <label class="control-label">Resubmission Code<span class="text-danger">*</span></label>
+            <select class="form-control" name="RSCode" [(ngModel)]="claimViewModel.ClaimModel.RSCode"
+                formControlName="RSCode">
+                <option *ngFor="let rsCodeObj of claimViewModel.ResubmissionCodes" value={{rsCodeObj.Id}}>
+                    {{rsCodeObj.Id+' | '+rsCodeObj.Name}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <app-claim-insurances [patAccount]="claimInfo.Patient_Account"
+        [providerCode]="claimViewModel.ClaimModel.Attending_Physician" (newItemEvent)="addItem($event)" (InsEvent)="addIns($event)"></app-claim-insurances>
+    <div class="row pt-10" formGroupName="hospitalization">
+        <div class="col-lg-12">
+            <h4 class="pull-left">
+                <i aria-hidden="true" class="fa fa-hospital-o"></i>&nbsp;<u>Hospitalization</u>
+            </h4>
+            <a class="link pull-right" data-toggle="modal" data-target="#wcInfo"
+                [class.disabled]="!disableForm ? null : '#'">Workers' Compensation</a>
+        </div>
+        <div class="form-group col-lg-3">
+            <label class="control-label" for="btnFacility">Facility</label>
+            <div class="input-group">
+                <input autocomplete="off" class="form-control" type="text"
+                    [(ngModel)]="claimViewModel.ClaimModel.Facility_Name" readonly
+                    placeholder="Find and Select Facility" formControlName="facility">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary btn-sm lh-1_2" type="button" (click)="showFacility()"
+                        [attr.disabled]="disableForm ? true:null"><i class="fa fa-search"></i>
+                    </button>
+                    <button class="btn btn-default btn-sm lh-1_2"
+                        (click)="this.claimViewModel.ClaimModel.Facility_Name = ''"
+                        [style.display]="claimViewModel==undefined || claimViewModel.ClaimModel==undefined || claimViewModel.ClaimModel.Facility_Code==undefined || claimViewModel.ClaimModel.Facility_Code==null ? 'none' : 'inline'">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-lg-3"
+            *ngIf="claimViewModel.ClaimModel.Facility_Code!=undefined && claimViewModel.ClaimModel.Facility_Code!=null">
+            <label class="control-label">From - To
+                <span
+                    *ngIf="claimViewModel.ClaimModel.Facility_Code!=undefined && claimViewModel.ClaimModel.Facility_Code!=null"
+                    class="text-danger">*
+                </span>
+            </label>
+            <my-date-range-picker [options]="myDateRangePickerOptions" [placeholder]="'MM/DD/YYYY'"
+                (dateRangeChanged)="onDateRangeChanged($event)" formControlName="facilityDates">
+            </my-date-range-picker>
+        </div>
+        <div class="col-lg-12">
+            <div class="checkbox m-r-xs pull-left">
+                <input type="checkbox" id="chkClaimPTL" id="chkClaimPTL" class="form-control"
+                    [(ngModel)]="claimViewModel.ClaimModel.PTL_Status" formControlName="ptlStatus"
+                    (click)="dynamicValidationPTL()" >
+                <label for="chkClaimPTL" data-placement="bottom">
+                    Draft
+                </label>
+            </div>
+        </div>
+        <div class="form-group col-lg-3"
+            *ngIf="this.claimViewModel.ClaimModel.PTL_Status!=undefined && this.claimViewModel.ClaimModel.PTL_Status ==true">
+            <label class=" control-label">Draft Reason</label>
+            <select class="form-control" name="account" [(ngModel)]="claimViewModel.ClaimModel.Delay_Reason_Code"
+                formControlName="ptlReason">
+                <option *ngFor="let addr of PTLReasons" value={{addr.id}}>
+                    {{addr.name }} 
+                </option>
+            </select>
+        </div>
+        <div class="form-group col-lg-3"
+            *ngIf="this.claimViewModel.ClaimModel.PTL_Status!=undefined && this.claimViewModel.ClaimModel.PTL_Status ==true">
+            <label class=" control-label">Detail</label>
+            <textarea class="form-control" style="height: auto !important" rows="4"
+                [(ngModel)]="claimViewModel.PTLReasonDetail" formControlName="ptlReasonDetail"></textarea>
+        </div>
+        <div class="form-group col-lg-3"
+            *ngIf="this.claimViewModel.ClaimModel.PTL_Status!=undefined && this.claimViewModel.ClaimModel.PTL_Status ==true">
+            <label class=" control-label">Doc Feedback</label>
+            <textarea class="form-control" style="height: auto !important" rows="4"
+                [(ngModel)]="claimViewModel.PTLReasonDoctorFeedback" formControlName="docFeedback"></textarea>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="pull-left">
+            <i aria-hidden="true" class="fa fa-medkit"></i>&nbsp;<u>Diagnosis (ICD/DX)</u>
+        </h4>
+    </div>
+    <div class="col-lg-12 pt-10">
+        <app-diagnosis (OnAddDiagnosis)="SetDiagnosis($event)" (onRemoveDiagnosis)="RemoveDiagnosis($event)"
+            [claimDos]="claimDos">
+        </app-diagnosis>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="pull-left">
+            <i aria-hidden="true" class="fa fa-money"></i>&nbsp;<u>Procedures (CPTs)</u>&nbsp;
+            <a title="Show All" (click)="chExp()" *ngIf="!isChargesExpand"><i class="fa fa-caret-square-o-right"
+                    aria-hidden="true"></i></a>
+            <a title="Hide All" (click)="chExp()" *ngIf="isChargesExpand"><i class="fa fa-caret-square-o-left"
+                    aria-hidden="true"></i> </a>
+        </h4>
+        <div class="pull-right">
+            <span class="checkbox checkbox-primary checkbox-inline">
+                <input class="styled" id="expand-cpt-table" type="checkbox">
+            </span>
+            <span class="checkbox checkbox-primary checkbox-inline">
+                <input type="checkbox" class="styled" id="Show-All">
+            </span>
+        </div>
+    </div>
+    <div class="col-lg-12 pt-10">
+        <div class="table-horizontal-scroll" id="procedure-section">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">Actions</th>
+                        <th *ngIf="isChargesExpand">Entry Date</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Seq.</th>
+                        <th>Proc Code</th>
+                        <th>Units</th>
+                        <th>Charges $</th>
+                        <th>Drug Code</th>
+                        <th>Quantity</th>
+                        <th>Qualifier</th>
+                        <th>POS</th>
+                        <th>M1</th>
+                        <th>M2</th>
+                        <th>M3</th>
+                        <th>M4</th>
+                        <th>Physical Modifier</th>
+                        <th colspan="4" style="text-align:center;">ICDs</th>
+                        <th *ngIf="isChargesExpand">Start Time</th>
+                        <th *ngIf="isChargesExpand">Stop Time</th>
+                        <th *ngIf="isChargesExpand">Include In EDI</th>
+                        <th *ngIf="isChargesExpand">Rectified</th>
+                        <!-- <th>Procedure  Description</th> -->
+                        <th *ngIf="isChargesExpand">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="cursor:pointer" *ngFor="let p of claimCharges; let ndx=index"
+                        [hidden]="p.claimCharges.Deleted || (p.claimCharges.IsRectify == true && showAllCPTflag == false)"
+                        (keydown)="NewRowCharges($event, ndx)">
+                        <td class="text-center">
+                            <button class="btn btn-xs btn-default" (click)="DeleteCPT(ndx)" title="Delete"
+                                [attr.disabled]="disableForm?true:null">
+                                <i class="fa fa-remove text-danger" id="delbtn" title="Delete"></i>
+                            </button>
+                            <span class="margin-r5"><i title="Rectify" (click)="RectifyCPT(ndx)"
+                                    [ngStyle]="EnableDisable(p.claimCharges.IsRectify,p.claimCharges.Created_Date)"
+                                    aria-hidden="true" class="app-icon-Amazing-Fusion-61 text-blue"></i></span>
+
+                        </td>
+                        <td *ngIf="isChargesExpand">
+                            <input [attr.disabled]="disableForm?true:null" type="text" class="form-control"
+                                style="width:120px!important;" disabled
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)" [(ngModel)]="p.claimCharges.DOE" />
+                        </td>
+                        <td>
+                            <input [attr.disabled]="disableForm?true:null" class="form-control" id="dFrom"
+                                style="width:120px!important;" type="text" [disabled]="p.claimCharges.IsRectify"
+                                name="chargesDateFrom" [(ngModel)]="p.claimCharges.Dos_From"
+                                (blur)="validateDate(p.claimCharges.Dos_From,p.claimCharges.Dos_To,ndx)"
+                                (keyup)="daysDiff(p.claimCharges.Dos_From,p.claimCharges.Dos_To,ndx,'FromDate', $event)"
+                                placeholder="MM/DD/YYYY" maxlength="10" />
+                        </td>
+                        <td>
+                            <input [attr.disabled]="disableForm?true:null" id="dTo" class="form-control" type="text"
+                                style="width:120px!important;" [disabled]="p.claimCharges.IsRectify"
+                                name="chargesDateTo" [(ngModel)]="p.claimCharges.Dos_To"
+                                (blur)="checkToDate(p.claimCharges.Dos_From,p.claimCharges.Dos_To,ndx)"
+                                (keydown)="daysDiff(p.claimCharges.Dos_From, p.claimCharges.Dos_To, ndx, 'ToDate', $event)"
+                                placeholder="MM/DD/YYYY" maxlength="10" />
+                        </td>
+                        <td>
+                            <input [attr.disabled]="disableForm?true:null" class="form-control"
+                                style="width:40px!important;" type="text" [(ngModel)]="p.claimCharges.Sequence_No"
+                                disabled />
+                        </td>
+                        <td>
+                             <input (keydown.tab)="onTabKey($event)"[attr.disabled]="disableForm?true:null" autocomplete="off" type="text"
+                                class="form-control" style="width:80px!important;" name="procCode"
+                                [(ngModel)]="p.claimCharges.Procedure_Code" title="{{p.Description}}" #CPTCode
+                                (keydown)="CPTKeyPressEvent($event, p.claimCharges.Procedure_Code, ndx)" >
+                        </td>
+                        <td>
+                            <input [attr.disabled]="disableForm?true:null" type="text" onlyNumbers="true"
+                            [readonly]="p.IsAnesthesiaCpt"
+                                style="width:60px!important;" class="form-control" maxlength="4"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify" [(ngModel)]="p.claimCharges.Units" #CPTCode #Unit
+                                (input)="CPTKeyPressEventUnit($event,Unit.value, ndx)" (blur)="onBlurUnit(ndx)" />
+                        </td>
+                                           
+                        <td>
+                            <input [attr.disabled]="disableForm?true:null" type="hidden" [(ngModel)]="p.amt" />
+                            <input [attr.disabled]="disableForm?true:null" type="text" class="form-control"
+                                style="width:80px!important;" maxlength="8" [(ngModel)]="p.claimCharges.Amount"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify" />
+                        </td>
+                        <!-- NDC -->
+                        <!-- Drug Code -->
+                        <td>
+                            <select [attr.disabled]="disableForm?true:null" #drugcode id="{{ndx+'drug_code'}}"
+                                class="form-control" style="width:160px!important;"
+                                [disabled]="p.claimCharges.IsRectify" [(ngModel)]="p.Drug_Code"
+                                (change)="onChangeDrugCode(ndx)">
+                                <option [ngValue]="code.Name"
+                                    *ngFor="let code of claimCharges[ndx].claimCharges.NDCList;">
+                                    {{code.Name}}</option>
+                            </select>
+                            <!-- <ngx-select id="{{ndx+'drug_code'}}" class="form-control" style="width:160px!important;"
+                                [disabled]="p.claimCharges.IsRectify" [items]="claimCharges[ndx].claimCharges.NDCList"
+                                optionTextField="Name" optionValueField="Name" [(ngModel)]="p.Drug_Code">
+                            </ngx-select> -->
+                        </td>
+                        <!-- Quantity -->
+                        <td>
+                            <input [attr.disabled]="disableForm?true:null" type="hidden"
+                                [(ngModel)]="claimCharges[ndx].claimCharges.NDC_Quantity" />
+                            <input [attr.disabled]="disableForm?true:null" type="text" class="form-control"
+                                style="width:80px!important;" maxlength="8"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [(ngModel)]="claimCharges[ndx].claimCharges.NDC_Quantity" />
+                        </td>
+                        <!-- Qualifier -->
+                        <td>
+                            <input [attr.disabled]="disableForm?true:null" type="hidden"
+                                [(ngModel)]="claimCharges[ndx].claimCharges.NDC_Qualifier" />
+                            <input [attr.disabled]="disableForm?true:null" type="text"
+                                [(ngModel)]="claimCharges[ndx].claimCharges.NDC_Qualifier" class="form-control"
+                                style="width:80px!important;" maxlength="8"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)" disabled readonly />
+                        </td>
+                        <!-- NDC -->
+                        <td>
+                            <select [attr.disabled]="disableForm?true:null" class="form-control" id="postdata"
+                                style="width:160px!important;" [disabled]="p.claimCharges.IsRectify" 
+                                [(ngModel)]="+p.claimCharges.POS" >
+                                <option value=""></option>
+                                <option *ngFor="let pof of claimViewModel.POSList" [ngValue]="+pof.POS_Code">
+                                    {{pof.POS_Code}}
+                                    | {{pof.POS_Name}}</option>
+
+                            </select>
+                        </td>
+                        <td> 
+                            <select [attr.disabled]="disableForm?true:null" class="form-control min-w-70px" id="Modifier_Code"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify" [(ngModel)]="p.claimCharges.Modi_Code1"
+                                (blur)="UpdateCPTCharges(CPTCode.value, ndx)">
+                                <option value=""></option>
+                                <option *ngFor="let item of modifiers" [value]="item.Modifier_Code">
+                                    {{item.Modifier_Code}}</option>
+
+                            </select>
+                        </td>
+                        <td>
+                            <select [attr.disabled]="disableForm?true:null" class="form-control min-w-70px"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify" [(ngModel)]="p.claimCharges.Modi_Code2">
+                                <option value=""></option>
+                                <option *ngFor="let item of modifiers" [value]="item.Modifier_Code">
+                                    {{item.Modifier_Code}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select [attr.disabled]="disableForm?true:null" class="form-control min-w-70px"
+                                [(ngModel)]="p.claimCharges.Modi_Code3"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify">
+                                <option value=""></option>
+                                <option *ngFor="let item of modifiers" [value]="item.Modifier_Code">
+                                    {{item.Modifier_Code}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select [attr.disabled]="disableForm?true:null" class="form-control min-w-70px"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify" [(ngModel)]="p.claimCharges.Modi_Code4">
+                                <option value=""></option>
+                                <option *ngFor="let item of modifiers" [value]="item.Modifier_Code">
+                                    {{item.Modifier_Code}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select [disabled]="!(p.IsAnesthesiaCpt)" class="form-control min-w-70px"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify" [ngModel]="p.claimCharges.Physical_Modifier"
+                                (change)="onPhysicalModifierChange($event.target.value,ndx)"
+                                >
+                                <option value=""></option>
+                                <option *ngFor="let item of physicalMoifiersList" [value]="item.key">
+                                    {{item.key}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="form-control" style="width:40px!important;" maxlength="2"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify || disableForm?true:null" type="text"
+                                [(ngModel)]="p.claimCharges.DX_Pointer1" />
+                        </td>
+                        <td>
+                            <input class="form-control" style="width:40px!important;" maxlength="2"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify || disableForm?true:null" type="text"
+                                [(ngModel)]="p.claimCharges.DX_Pointer2" />
+                        </td>
+                        <td>
+                            <input class="form-control" style="width:40px!important;" maxlength="2"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify || disableForm?true:null" type="text"
+                                [(ngModel)]="p.claimCharges.DX_Pointer3" />
+                        </td>
+                        <td>
+                            <input class="form-control" style="width:40px!important;" maxlength="2"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify || disableForm?true:null" type="text"
+                                [(ngModel)]="p.claimCharges.DX_Pointer4" />
+                        </td>
+                        <td *ngIf="isChargesExpand">
+                                <div class="time-picker-container">
+                                    <input type="time" [ngModel]="p.claimCharges.Start_Time"
+                                    (blur)="calculateTimeDifference(ndx,$event.target.value,'start')"
+                                    [readonly]="!(p.IsAnesthesiaCpt)"
+                                    class="time-picker-input">
+                                    <button *ngIf="p.claimCharges.Start_Time" (click)="clearTime(ndx,'Start_Time','')" class="clear-icon"
+                                    [disabled]="!(p.IsAnesthesiaCpt)">✕</button>
+                                  </div>
+                        </td>
+                        <td *ngIf="isChargesExpand">
+                                <div class="time-picker-container">
+                                    <input type="time" [ngModel]="p.claimCharges.Stop_Time"
+                                (blur)="calculateTimeDifference(ndx,$event.target.value,'stop')"
+                                [readonly]="!(p.IsAnesthesiaCpt)"
+                                class="time-picker-input">
+                                    <button *ngIf="p.claimCharges.Stop_Time" (click)="clearTime(ndx,'Stop_Time','')" class="clear-icon"
+                                    [disabled]="!(p.IsAnesthesiaCpt)">✕</button>
+                                  </div>
+                        </td>
+                        <td align="center" *ngIf="isChargesExpand">
+                            <input type="checkbox" class="form-control"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify || disableForm?true:null"
+                                [(ngModel)]="p.claimCharges.Include_In_Edi"
+                                (change)="p.claimCharges.IncludedInEDI = !p.claimCharges.IncludedInEDI" />
+                        </td>
+                        <td *ngIf="isChargesExpand">
+                            <input class="form-control" type="checkbox"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [disabled]="p.claimCharges.IsRectify || disableForm?true:null"
+                                [(ngModel)]="p.claimCharges.IsRectify" disabled="disabled"
+                                (change)="p.claimCharges.IsRectify = p.claimCharges.IsRectify" />
+                        </td>
+                        <!-- <td class="blue" *ngIf="isChargesExpand">
+                            <input [attr.disabled]="disableForm?true:null" type="text" class="form-control" [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)"
+                                [(ngModel)]="p.claimCharges.NDC_Service_Description" />
+                        </td> -->
+                        <td *ngIf="isChargesExpand">
+                            <input [attr.disabled]="disableForm?true:null" type="text" class="form-control"
+                                [(ngModel)]="p.claimCharges.Notes"
+                                [ngStyle]="setCursorStyle(p.claimCharges.IsRectify)" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="38">
+                            <button [attr.disabled]="disableForm?true:null" (click)="AddNewCPT()" class="btn-white"
+                                style="border: none;" title="Add New Procedure (CPT)">
+                                Add New Procedure (CPT)
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <app-payments></app-payments>
+    </div>
+</div>
+<div class="row pull-right">
+    <div class="col-lg-12">
+        <div class="btn-group">
+            <button class="btn btn-danger btn-sm" (click)="getSetStatus()">Cancel</button>
+            <button class=" btn btn-primary btn-sm" (click)="saveClaim('Draft')" [disabled]="disableForm">Save as
+                Draft</button>
+            <button class="btn btn-primary btn-sm" (click)="saveClaim('Save')"
+                [disabled]="!claimForm.get('main').valid || disableForm || disableSave ">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Search Subscriber Model -->
+<div class="modal fade modal-primary" id="AttachmentsModel" tabindex="-1" role="dialog" aria-labelledby=""
+    data-backdrop="static">
+    <div class="modal-dialog modal-xlg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="attachmentClose" data-dismiss="modal" class="close" aria-label="Close">Close<i
+                        class="app-icon-IconSet-1-12"></i></button>
+                <h4 class="modal-title">Claim Attachments</h4>
+            </div>
+            <div class="modal-body">
+                <app-claim-attachments (notifyParent)="getNotificationFacility()">
+                </app-claim-attachments>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<button id="Facilities" [hidden]="true" data-toggle="modal" data-target="#Facility">Open Modal</button>
+<!-- Search Subscriber Model -->
+<div class="modal fade modal-primary" id="Facility" tabindex="-1" role="dialog" aria-labelledby=""
+    data-backdrop="static">
+    <div class="modal-dialog modal-xlg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="facilityClose" data-dismiss="modal" class="close" aria-label="Close"
+                    (click)="resetPopup()">Close<i class="app-icon-IconSet-1-12"></i></button>
+                <h4 class="modal-title">Facilities</h4>
+            </div>
+            <div class="modal-body">
+                <app-facilities (notifyParent)="getNotificationFacility()"></app-facilities>
+            </div>
+        </div>
+    </div>
+</div>
+<button id="Attachments" [hidden]="true" data-toggle="modal" data-target="#AttachmentsModel">Open
+    Modal
+</button>
+<app-claim-notes [claimNo]="claimInfo.claimNo"></app-claim-notes>
+<app-claims-assignment></app-claims-assignment>
+<div class="modal inmodal fade" id="wcInfo" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" style="color:black">Worker Com Information</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>Date of Injury </label>
+                        <my-date-picker name="mydate" [selDate]="selDOI"  (dateChanged)="onDateChanged($event,'injury_date')" (blur)="formatDate($event)" [options]="{
+                            dateFormat: 'mm/dd/yyyy', height: '25px', width: '100%'
+                      
+                        }" ></my-date-picker>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Employment Related</label>
+                        <div>
+                            <label>
+                                <input type="radio" value="1"
+                              
+
+                                [checked]="claimViewModel.ClaimModel.Employment"
+                                id="empYes" name="emp"  (change)="onEmpChange($event.target.value )"  
+                                 > Yes
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="radio"  value="0" 
+                                [checked]="!claimViewModel.ClaimModel.Employment"
+                                id="empNo" name="emp" (change)="onEmpChange($event.target.value )"> No</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Accident</label>
+                        <div>
+                            <label>
+                                <input type="radio" value="1"
+                                [checked]="claimViewModel.ClaimModel.Accident_Auto"
+                                id="accidentAuto" name="Accident" (change)="onChangeAccident($event.target.value ,'auto')">Auto
+                            </label>
+                        </div>
+                 
+                        <div>
+                            <label>
+
+                                <input type="radio" checked=""
+                                [checked]="claimViewModel.ClaimModel.Accident_Other"
+                                value="0" id="accidentNo" name="Accident" (change)="onChangeAccident($event.target.value,'noAuto')">
+                                Other</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label>Accident State </label>
+
+                        <select  class="form-control min-w-70px"
+                       
+                        [(ngModel)]="claimViewModel.ClaimModel.Accident_State">
+                        <option value=""></option>
+                        <option *ngFor="let item of states" [value]="item.State_Code">
+                            {{item.State_Name}}</option>
+                    </select> 
+
+                       
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-lg-3">
+                        <label>Time(Hr) </label>
+                        <input class="form-control" type="number"  [(ngModel)]="claimViewModel.ClaimModel.Accident_Time">
+                    </div>  
+                </div> -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-white" type="reset" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" type="submit" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

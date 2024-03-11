@@ -1,0 +1,169 @@
+<h3>User report</h3>
+<div class="row">
+  <form [formGroup]="CPDForm">
+
+    
+      <div class="form-group col-lg-3">
+        <label class="control-label">Practices<span class="text-danger">*</span></label>
+        <select class="form-control"  formControlName="PracCode"  (change)="onchangeuser()">
+          <option value=0 disabled>Select Practice</option>
+          <option *ngFor="let c of listPracticesList" value={{c.Id}}>{{c.Name}}</option>
+        </select> 
+        
+      </div>
+      <!-- <span class="input-group-btn">
+        <button class="btn btn-primary btn-sm lh-1_2" type="button" [disabled]="this.CPDForm.value.PracCode ==0"
+          (click)="onchangePractice()"><i class="fa fa-refresh"></i></button>
+      </span> -->
+    
+      <div class="form-group col-lg-3">
+        <label class="control-label">Users</label>
+        <select class="form-control"  formControlName="userid">
+          <option value=0 disabled>All</option>
+          <option *ngFor="let c of listUserList" value={{c.Id}}>{{c.Name}}</option>
+        </select>
+    
+      </div>
+      <!-- <span class="input-group-btn">
+        <button class="btn btn-primary btn-sm lh-1_2" type="button" [disabled]="this.CPDForm.value.userid ==0"
+          (click)="onchangePractice()"><i class="fa fa-refresh"></i></button>
+      </span> -->
+      <div class="form-group col-lg-3">
+        <label>Date From</label>
+        <my-date-picker id="dtpFrom" [options]="myDatePickerOptions" [placeholder]="placeholder"
+          (dateChanged)="onDateChanged($event,'From')" formControlName="dateFrom">
+        </my-date-picker>
+      </div>
+      <div class="form-group col-lg-3">
+        <label>Date To</label>
+        <my-date-picker id="dtpTo" [placeholder]="placeholder" formControlName="dateTo"
+          (dateChanged)="onDateChanged($event,'To')" [options]="myDatePickerOptions">
+        </my-date-picker>
+      </div>
+      
+  
+  </form>
+
+</div>
+<div class="row col-lg-12">
+  <button class="btn btn-primary btn-sm pull-right"  type="submit"
+    (click)="onchangePractice()">Search</button>
+  <button type="button" class="btn btn-white pull-right ml-2 btn-sm" (click)="onClear()">Clear</button>
+</div>
+
+
+
+<div class="row" *ngIf="isSearchInitiated == true">
+  <div class="col-lg-12">
+    <h3>User Report</h3>
+  </div>
+  <div class="col-lg-18">
+    <table class="table table-striped table-hover table-bordered datatable dtuserReportdetials">
+      <thead>
+        <tr>
+          <th>Practice Code</th>
+          <th>Practice Name</th>
+          <th>Patient Account</th>
+          <th> Patient Name </th>
+          <th>Claim No</th>
+          <th>Location Name</th>
+          <th>Attending Physician</th>
+          <th>Rendering Provider</th>
+          <th>Procedure Code</th>
+          <th>Procedure Description </th>
+        
+          <th>Primary Carrier</th>
+          <th>Primary Policy Number</th>
+          <th> Secondary Carrier </th>
+          <th>Secondary Policy Number</th>
+        
+         
+          <th>Created by</th>
+          <!-- <th>Ceated Date</th>
+          <th>Modified By</th>
+          <th>Modified Date</th> -->
+          <th>DOS</th>
+          <th>Entry Date</th>
+          <th>Billed Charge</th>
+          <th>Units</th>
+          <th>Claim Charges Id</th>
+          <th>Modifier 1</th>
+          <th>Modifier 2</th>
+          <th>Modifier 3</th>
+          <th>Modifier 4</th>
+          <th>Diagnosis 1</th>
+          <th>Diagnosis 2</th>
+          <th>Diagnosis 3</th>
+          <th>Diagnosis 4</th>
+          <th>Diagnosis 5</th>
+          <th>Diagnosis 6</th>
+          <th>Diagnosis 7</th>
+          <th>Diagnosis 8</th>
+          <th>Diagnosis 9</th>
+          <th>Diagnosis 10 </th>
+          <th>Diagnosis 11</th>
+          <th>Diagnosis 12</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cp of usersDetailReport">
+          <td>{{cp.Practice_Code}}</td>
+          <td>{{cp.Prac_Name}}</td>
+          <td>{{cp.Patient_Account}}</td>
+          <td>{{cp.Patient_Name}}</td>
+          <td>{{cp.CLAIM_NO}}</td>
+          <td>{{cp.Location_Name}}</td>
+          <td>{{cp.Attending_Physician}}</td>
+          <td>{{cp.RENDERRING_PROVIDER}}</td>
+          <td>{{cp.PROCEDURE_CODE}}</td>
+          <td>{{cp.ProcedureDescription}}</td>
+         
+          <td>{{cp.Primary_Carrier}}</td>
+          <td>{{cp.Primary_Policy_Number_}}</td>
+          <td>{{cp.Secondary_Carrier}}</td>
+          <td>{{cp.Secondary_Policy_Number_}}</td>
+         
+          <td><span *ngIf="cp.useridbycreated == null">Imported</span>
+            
+            {{cp.created_byN}}</td>
+            <!-- <td><span *ngIf="cp.useridbycreated == null">Imported</span>
+            
+              {{cp.CreatedDate  | date:'MM/dd/yyyy'}}</td> -->
+          <!-- <td><span *ngIf="cp.useridbymodified == null">Not Updated</span>
+            
+            {{cp.Modified_ByN}}</td>
+          
+            <td><span *ngIf="cp.useridbymodified == null">Not Updated</span>
+              
+              {{cp.ModifiedDate  | date:'MM/dd/yyyy'}}</td> -->
+          <td>{{cp.DOS  | date:'MM/dd/yyyy'}}</td>
+          <td>{{cp.Entry_Date  | date:'MM/dd/yyyy'}}</td>
+          <td>{{cp.BILLED_CHARGE}}</td>
+          <td>{{cp.UNITS}}</td>
+          <td>{{cp.claim_charges_id}}</td>
+          <td>{{cp.Modi_Code1}}</td>
+          <td>{{cp.Modi_Code2}}</td>
+          <td>{{cp.modi_code3}}</td>
+          <td>{{cp.modi_code4}}</td>        
+          <td>{{cp.DX_Code1}}</td>
+          <td>{{cp.DX_Code2}}</td>
+          <td>{{cp.DX_Code3}}</td>
+          <td>{{cp.DX_Code4}}</td>
+          <td>{{cp.DX_Code5}}</td>
+          <td>{{cp.DX_Code6}}</td>
+          <td>{{cp.DX_Code7}}</td>
+          <td>{{cp.DX_Code8}}</td>
+          <td>{{cp.DX_Code9}}</td>
+          <td>{{cp.DX_Code10}}</td>
+          <td>{{cp.DX_Code11}}</td>
+          <td>{{cp.DX_Code12}}</td>
+     
+          
+
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

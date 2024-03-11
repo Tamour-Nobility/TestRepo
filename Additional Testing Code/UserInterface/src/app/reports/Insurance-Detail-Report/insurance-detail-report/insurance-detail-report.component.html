@@ -1,0 +1,84 @@
+<h3>Insurance Aging Analysis</h3>
+<div class="row">
+  <form [formGroup]="CPDForm">
+    <div class="col-lg-3">
+      <label class="control-label">Practices</label>
+      <div class="input-group">
+        <select class="form-control"  (change)="onchangePractice()" formControlName="PracCode">
+          <option value=0 disabled>Select Practice</option>
+          <option *ngFor="let c of listPracticesList" value={{c.Id}}>{{c.Name}}</option>
+        </select>
+        <span class="input-group-btn">
+          <button class="btn btn-primary btn-sm lh-1_2" type="button" [disabled]="this.CPDForm.value.PracCode ==0"
+            (click)="onchangePractice()"><i class="fa fa-refresh"></i></button>
+        </span>
+      </div>
+      
+    </div>
+  </form>
+
+</div>
+
+  <br>
+  <br>
+  <br>
+
+<div class="row" *ngIf="isSearchInitiated == true">
+  <div class="col-lg-12">
+    <h3>Insurance Aging Report</h3>
+  </div>
+  <div class="col-lg-12">
+    <table class="table table-striped table-hover table-bordered datatable dtInsuranceDetail">
+      <thead>
+        <tr>
+          <th> Practice Code </th>
+          <th>Practice Name</th>
+          <th>Patient Name </th>
+          <th> Patient account </th>
+          <th> Date Of Birth </th>
+          <th> Claim Entry Date</th>
+          <th> Claim No </th>
+          <th> DOS </th>
+          <th> Claim Total </th>
+          <th> Amount Paid </th>
+          <th> Adjustment </th>
+          <th> Amount Due </th>
+          <th>Primary Status </th>
+          <th> Primary Payer </th>
+          <th> Primary Policy Number </th>
+          <th> Secondary Status </th>
+          <th> Secondary Payer </th>
+          <th> Secondary Policy Number </th>
+          <th> Other Status </th>
+          <th> Aging Days </th>
+          <th> Patient Status </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cp of insuranceDetailReport">
+          <td>{{cp.PRACTICE_CODE}}</td>
+          <td>{{cp.PRAC_NAME}}</td>
+          <td>{{cp.PATIENT_NAME}}</td>
+          <td>{{cp.PATIENT_ACCOUNT}}</td>
+          <td>{{cp.DATE_OF_BIRTH | date:'MM/dd/yyyy'}}</td>
+          <td>{{cp.CLAIM_ENTRYDATE | date:'MM/dd/yyyy'}}</td>
+          <td>{{cp.CLAIM_NO}}</td>
+          <td>{{cp.DOS | date:'MM/dd/yyyy'}}</td>
+          <td>{{cp.CLAIM_TOTAL|currency:'USD':'symbol-narrow'}}</td>
+          <td>{{cp.AMT_PAID|currency:'USD':'symbol-narrow'}}</td>
+          <td>{{cp.ADJUSTMENT|currency:'USD':'symbol-narrow'}}</td>
+          <td>{{cp.AMT_DUE|currency:'USD':'symbol-narrow'}}</td>
+          <td>{{cp.PRI_STATUS}}</td>
+          <td>{{cp.PRIMARYPAYER}}</td>
+          <td>{{cp.PRI_POLICY_NUMBER}}</td>
+          <td>{{cp.SEC_STATUS}}</td>
+          <td>{{cp.SECPAYER}}</td>
+          <td>{{cp.SEC_POLICY_NUMBER}}</td>
+          <td>{{cp.OTH_STATUS}}</td>
+          <td>{{cp.AGINGDAYS}}</td>
+          <td>{{cp.Pat_status}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

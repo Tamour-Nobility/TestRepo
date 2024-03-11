@@ -1,0 +1,217 @@
+<div class="row">
+    <div class="form-group col-lg-3">
+        <label for="provider">Providers<span class="text-danger">*</span></label>
+
+        <angular2-multiselect [data]="topLevelProviderSelectList" [(ngModel)]="appointmentSearchViewModel.providers"
+            [settings]="providerSettings" (onSelect)="onProvidersSelect()" (onDeSelect)="onProvidersDeSelect()"
+            (onSelectAll)="onProvidersSelectAll()" (onDeSelectAll)="onProvidersDeSelectAll($event)">
+        </angular2-multiselect>
+    </div>
+    <div class="form-group col-lg-3 col-md-3">
+        <label for="">Locations<span class="text-danger">*</span></label>
+        <angular2-multiselect [data]="topLevelLocationSelectList" [(ngModel)]="appointmentSearchViewModel.locations"
+            [settings]="locationsSettings" (onSelect)="onLocationsSelect()" (onDeSelect)="onLocationsDeSelect()"
+            (onSelectAll)="onLocationsSelectAll()" (onDeSelectAll)="onLocationsDeSelectAll($event)">
+        </angular2-multiselect>
+    </div>
+</div>
+<div class="row" *ngIf="appointmentSearchViewModel.providers.length>0 && appointmentSearchViewModel.locations.length>0">
+    <div class="col-lg-12">
+        <button class="btn btn-outline btn-primary btn-sm pull-right mb-10" (click)="reload()"><i
+                class="fa fa-refresh"></i> Refresh</button>
+        <div class="clearfix"></div>
+        <!-- Calender Header -->
+        <mwl-demo-utils-calendar-header [(view)]="view" [(viewDate)]="viewDate" (viewDateChange)="fetchEvents()"
+            (viewChange)="fetchEvents()">
+        </mwl-demo-utils-calendar-header>
+        <!-- Calender Header -->
+        <!-- Calender Views -->
+        <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+                [excludeDays]="excludeDays" (dayClicked)="dayClicked($event.day)"
+                (eventClicked)="handleEvent('clicked',$event.event)">
+            </mwl-calendar-month-view>
+            <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+                [hourSegments]="12" [excludeDays]="excludeDays" (eventClicked)="handleEvent('clicked',$event.event)"
+                (dayHeaderClicked)="clickedDate=$event.day.date" (hourSegmentClicked)="hourSegmentClicked($event)"
+                [dayEndHour]="dayEndHour" [dayStartHour]="dayStartHour">
+            </mwl-calendar-week-view>
+            <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
+                [hourSegments]="12" (eventClicked)="handleEvent('clicked',$event.event)"
+                (hourSegmentClicked)="hourSegmentClicked($event)" [dayEndHour]="dayEndHour"
+                [dayStartHour]="dayStartHour">
+            </mwl-calendar-day-view>
+        </div>
+        <!-- Calender Views -->
+    </div>
+</div>
+
+<!-- bs Modal to modify the event -->
+<div class="modal fade" bsModal #bsModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-nested-name"
+    (onShown)="onShown()" (onHidden)="onHidden()">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="bsModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">
+                    {{appointmentModel?.action=='edit'?'Update an Appointment':appointmentModel?.action=='add'?'Book an
+                    Appointment':'Appointment Details'}}
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div [ngSwitch]="true">
+                    <ng-container *ngSwitchCase="appointmentModel?.action==='clicked'">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <a title="Go to Demographics"
+                                    (click)="onPatientClick({name:appointmentModel?.event.meta.patientName,account:appointmentModel?.event.meta.patientAccount})">
+                                    <h2 class="text-success">{{appointmentModel?.event.meta.patientName}}
+                                        <small>{{appointmentModel?.event.meta.gender==1?'Male':'Female'}} -
+                                            {{appointmentModel?.event.meta.dob | date:'MM/dd/yyyy'}}</small>
+                                    </h2>
+                                </a>
+                            </div>
+                            <div class="col-lg-12">
+                                <span
+                                    class="text-muted">{{GetFormattedDateAndTime(appointmentModel?.event.meta.appointmentDateTime,appointmentModel?.event.meta.timeFrom)
+                                    | date:'MM/dd/yyyy h:mm a'}}&nbsp;{{appointmentModel?.event.meta.duration}}
+                                    min
+                                </span>
+                                <p class="text-success"><span class="fa fa-circle"
+                                        [ngStyle]="{'color':appointmentModel?.event.color.primary}"></span>&nbsp;{{appointmentModel?.event.meta.reasonDescription
+                                    | titlecase}}
+                                </p>
+                            </div>
+                            <div class="col-lg-6">
+                                <h4 class="list-group-item-heading">Appointment Status</h4>
+                                <p class="text-success">{{appointmentModel?.event.meta.appointmentStatus | titlecase}}
+                                </p>
+                                <button class="btn btn-sm btn-default" style="color:white"
+                                    [style.backgroundColor]='appointmentModel?.event.meta.eligibilityColor'
+                                    (click)="checkEligibility(appointmentModel?.event.meta.appointmentId,appointmentModel?.event)">
+                                    Eligibility</button>
+                            </div>
+                            <div class="col-lg-6">
+                                <h4>Location</h4>
+                                <!-- <p class="text-success">{{appointmentModel?.event.meta.location_name | titlecase}}</p> -->
+                                <p class="text-success">{{appointmentModel?.event.meta.location_addres}}
+                                    <!-- {{appointmentModel?.event.meta.location_city}},
+                                    {{appointmentModel?.event.meta.location_state}} -->
+                                    {{appointmentModel?.event.meta.location_zip}}
+                                </p>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12">
+                                <h4>Comments</h4>
+                                <p class="text-success text-justify">
+                                    {{appointmentModel?.event.meta.notes}}
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="appointmentModel?.action==='add' || appointmentModel?.action==='edit'">
+                        <form [formGroup]="eventForm">
+                            <div class="row">
+                                <div class="form-group col-lg-4">
+                                    <label for="provider">Provider<span class="text-danger">*</span></label>
+                                    <select id="provider" class="form-control" formControlName="provider"
+                                        (change)="onSelect($event)" [(ngModel)]="appointmentModel.ProviderCode">
+                                        <option [ngValue]="null" disabled>Select Provider</option>
+                                        <option *ngFor="let provider of providerSelectList" [value]="provider.Id">
+                                            {{provider.Name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label for="location">Location<span class="text-danger">*</span></label>
+                                    <select id="location" class="form-control" formControlName="location"
+                                        (change)="onSelect($event)" [(ngModel)]="appointmentModel.LocationCode">
+                                        <option [ngValue]="null" disabled>Select Location</option>
+                                        <option *ngFor="let location of locationSelectList" [value]="location.Id">
+                                            {{location.Name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-4 col-md-6" [ngClass]="{'has-error':(patient.invalid)}">
+                                    <label for="patient">Patient<span class="text-danger">*</span></label>
+                                    <ngx-select [items]="patientSelectList" (typed)="onTypePatient($event)"
+                                        optionValueField="Id" optionTextField="Name" [allowClear]="true"
+                                        [formControl]="patient" [(ngModel)]="appointmentModel.PatientAccount"
+                                        placeholder="Search Patients"
+                                        (select)="onSelectPatient(appointmentModel.PatientAccount)">
+                                    </ngx-select>
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4"
+                                    title="Please choose Provider and Location first.">
+                                    <label for="reason">Visit Reason<span class="text-danger">*</span></label>
+                                    <select id="reason" class="form-control" formControlName="reason"
+                                        [attr.disabled]="(appointmentModel.ProviderCode==null || appointmentModel.ProviderCode==undefined || appointmentModel.LocationCode==null || appointmentModel.LocationCode==undefined)?'':null"
+                                        [(ngModel)]="appointmentModel.ReasonId">
+                                        <option [ngValue]="null" disabled>Select Reason</option>
+                                        <option *ngFor="let reason of reasonsSelectList" [value]="reason.ReasonId">
+                                            {{reason.Description}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"
+                                        *ngIf="!isOfficeTiming || isAlreadyAppointed || isBlockedTimming"
+                                        [popover]="myPopover" style="cursor: pointer;"></i>
+                                    <popover-content #myPopover [title]="errorMessageTitle" placement="left"
+                                        [animation]="true" [closeOnClickOutside]="true">
+                                        <div [innerHtml]="errorMessage"></div>
+                                    </popover-content>
+                                    <label for="date">When<span class="text-danger">*</span></label>
+                                    <my-date-picker id="date" [options]="myDatePickerOptions"
+                                        (keyup)="dateMaskGS($event)" [placeholder]="placeholder"
+                                        (dateChanged)="onDateTimeChanged($event,'date')" formControlName="date">
+                                    </my-date-picker>
+                                </div>
+                                <div class="form-group col-lg-2 col-md-2" title="Please select appointment date first.">
+                                    <label for="start">Start From<span class="text-danger">*</span></label>
+                                    <input type="time" class="form-control" id="start" formControlName="timeFrom"
+                                        required (input)="onDateTimeChanged($event,'time')"
+                                        [(ngModel)]="appointmentModel.TimeFrom" min="08:00:00" max="20:00:00">
+                                </div>
+                                <div class="form-group col-lg-2 col-md-2">
+                                    <label for="duration">Duration</label>
+                                    <select class="form-control" formControlName="duration" id="duration"
+                                        [(ngModel)]="appointmentModel.Duration" (ngModelChange)="onDurationChange()">
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="45">45</option>
+                                        <option value="60">60</option>
+                                    </select>
+                                    <!-- <input id="duration" class="form-control" formControlName="duration" type="number"
+                                        [(ngModel)]="appointmentModel.Duration" (ngModelChange)="onDurationChange()" /> -->
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-group col-lg-4 col-md-4">
+                                    <label for="status">Status<span class="text-danger">*</span></label>
+                                    <select id="status" class="form-control" formControlName="status"
+                                        [(ngModel)]="appointmentModel.StatusId">
+                                        <option [ngValue]="null" disabled>Select Status</option>
+                                        <option *ngFor="let status of appointmentModel.Statuses" [value]="status.Id">
+                                            {{status.Name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-8 col-md-8">
+                                    <label for="title" class="control-label">Comments</label>
+                                    <textarea id="title" class="form-control" maxlength="500" rows="5"
+                                        placeholder="Comments" formControlName="notes"
+                                        [(ngModel)]="appointmentModel.Notes"
+                                        style="height: auto !important;"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" (click)="bsModal.hide()">Close</button>
+                <button type=" button" class="btn btn-primary btn-sm"
+                    [disabled]="!eventForm.valid || !patient.valid || !isOfficeTiming || isBlockedTimming"
+                    (click)="submit()" *ngIf="appointmentModel?.action!=='clicked'">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

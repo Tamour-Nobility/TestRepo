@@ -1,0 +1,136 @@
+<div class="ibox">
+  <div class="ibox-title">
+    <h5>{{strAddEditTitle}}</h5>
+  </div>
+  <div class="ibox-content">
+    <form [formGroup]="insuranceForm" (ngSubmit)="onSaveClick()">
+      <div class="row">
+        <div class="form-group col-lg-12">
+          <label>Payer Name<span class="text-danger">*</span></label>
+          <ngx-select [items]="insPayerList" (typed)="onTypeInsurancePayer($event)" optionValueField="Id"
+            optionTextField="Name" [allowClear]="true" [(ngModel)]="insModel.ObjResponse.InsPayer_Id"
+            placeholder="Search Payers" formControlName="paName">
+          </ngx-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-lg-4">
+          <label>Zip<span class="text-danger">*</span></label>
+          <input type="text" placeholder="_____-____" mask="00000-0000" maxlength="10" class="form-control"
+            [(ngModel)]="insModel.ObjResponse.Insurance_Zip"
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.keyCode == 8) || (event.keyCode == 9)"
+            (blur)="onBlurMethod()" formControlName="zCode">
+        </div>
+        <div class="form-group col-lg-6">
+          <label>City</label>
+          <input type="text" class="form-control" readonly [(ngModel)]="insModel.ObjResponse.Insurance_City"
+            formControlName="zCity">
+        </div>
+        <div class="form-group col-lg-2">
+          <label>State</label>
+          <input type="text" class="form-control" readonly [(ngModel)]="insModel.ObjResponse.Insurance_State"
+            formControlName="zState">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-lg-12">
+          <label>Address<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" [(ngModel)]="insModel.ObjResponse.Insurance_Address"
+            formControlName="iAddress">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-lg-4">
+          <label>Phone Type 1</label>
+          <select class="form-control" [(ngModel)]="insModel.ObjResponse.Insurance_Phone_Type1"
+            class="form-control form-control2" formControlName="pTypee">
+            <option value="TOLL FREE">TOLL FREE</option>
+            <option value="CELL">CELL</option>
+            <option value="WORK PHONE">WORK PHONE</option>
+            <option value="HOME PHONE">HOME PHONE</option>
+            <option value="CELL PHONE">CELL PHONE</option>
+            <option value="FAX">FAX</option>
+            <option value="OFFICE">OFFICE</option>
+            <option value="IVR">IVR</option>
+          </select>
+        </div>
+        <div class="form-group col-lg-8">
+          <label>Phone #</label>
+          <input type="text" placeholder="(___) ___-____" mask="(000) 000 0000" class="form-control"
+            [(ngModel)]="insModel.ObjResponse.Insurance_Phone_Number1"
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.keyCode == 8) || (event.keyCode == 9)"
+            formControlName="phonee">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-lg-4">
+          <label>Phone Type 2</label>
+          <select class="form-control" [(ngModel)]="insModel.ObjResponse.Insurance_Phone_Type2"
+            class="form-control form-control2" formControlName="pType">
+            <option value="TOLL FREE">TOLL FREE</option>
+            <option value="CELL">CELL</option>
+            <option value="WORK PHONE">WORK PHONE</option>
+            <option value="HOME PHONE">HOME PHONE</option>
+            <option value="CELL PHONE">CELL PHONE</option>
+            <option value="FAX">FAX</option>
+            <option value="OFFICE">OFFICE</option>
+            <option value="IVR">IVR</option>
+          </select>
+        </div>
+        <div class="form-group col-lg-8">
+          <label>Phone #</label>
+          <input type="text" placeholder="(___) ___-____" mask="(000) 000 0000"
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.keyCode == 8) || (event.keyCode == 9)"
+            class="form-control" [(ngModel)]="insModel.ObjResponse.Insurance_Phone_Number2" formControlName="phone">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-lg-4">
+          <label>Ins. Department</label>
+          <input type="text" maxlength="4"
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.keyCode == 8) || (event.keyCode == 9)"
+            class="form-control" [(ngModel)]="insModel.ObjResponse.Insurance_Department" formControlName="insDept">
+        </div>
+        <div class="form-group col-lg-4">
+          <label>Claim Filing</label>
+          <input type="text" maxlength="6" class="form-control"
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.keyCode == 8) || (event.keyCode == 9)"
+            [(ngModel)]="insModel.ObjResponse.ClaimFilingLimit" formControlName="cFilling">
+        </div>
+        <div class="form-group col-lg-4">
+          <label>Appeal Filing</label>
+          <input type="text" maxlength="6" class="form-control"
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || (event.keyCode == 8) || (event.keyCode == 9)"
+            [(ngModel)]="insModel.ObjResponse.AppealFilingLimit" formControlName="aFilling">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="checkbox checkbox-inline checkbox-primary col-lg-4 m-n">
+            <input type="checkbox" id="chkIsSecAttachNeed" [(ngModel)]="insModel.ObjResponse.Is_Sec_Attach_Need"
+              class="styled" formControlName="sec">
+            <label for="chkIsSecAttachNeed" data-placement="bottom" title="Department Head">Sec Attach Need</label>
+          </div>
+          <div class="checkbox checkbox-inline checkbox-primary col-lg-4 m-n">
+            <input type="checkbox" id="chkISSECPaper" [(ngModel)]="insModel.ObjResponse.IS_SEC_Paper" class="styled"
+              formControlName="secPaper">
+            <label for="chkISSECPaper" data-placement="bottom" title="Department Head">SEC Paper</label>
+          </div>
+          <div class="checkbox  checkbox-primary col-lg-4 m-n">
+            <input type="checkbox" id="chkInActive" [(ngModel)]="insModel.ObjResponse.InActive" class="styled"
+              formControlName="iActive">
+            <label for="chkInActive" data-placement="bottom" title="Department Head">InActive</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <button class="btn btn-primary pull-right btn-sm" type="submit" [disabled]="!insuranceForm.valid">Save
+          </button>
+          <button class="btn btn-default pull-right btn-sm" (click)="onCancelClick()">Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

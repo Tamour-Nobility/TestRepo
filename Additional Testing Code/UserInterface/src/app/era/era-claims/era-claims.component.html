@@ -1,0 +1,108 @@
+
+<h3 class="BannerTitleText">Apply Payment</h3>
+<div class="row">
+    <div class="col-lg-8  col-lg-offset-4">
+        <table class="table table-responsive table-bordered" >
+            <thead>
+                <tr class="apply-payment-heading">
+                    <th>Deposit Date</th>
+                    <th>Check Date</th>
+                    <th>Payer Type</th>
+                    <th>Payer Name</th>
+                    <th>Check Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="apply-payment">
+                    <td class="dateCell">
+                        <my-date-picker id="dtpDD"  [options]="myDatePickerOptions" (keyup)="dateMask($event)"
+                            [placeholder]="'MM/DD/YYYY'" [(ngModel)]="depositDate"
+                            (dateChanged)="onDateChangedDd($event)"></my-date-picker>
+                    </td>
+                    <td><span>{{data.era.CHECKDATE | date:'MM/dd/yyyy'}}</span></td>
+                    <td><span>Insurance</span></td>
+                    <td><span>{{data.era.PAYERNAME}}</span></td>
+                    <td><span>${{data.era.CHECKAMOUNT}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+<div class="col-lg-4 col-lg-offset-8">
+        <table class="table table-responsive table-bordered">
+            <thead>
+                <tr class="apply-payment-heading">
+                    <th>Check Amount</th>
+                    <th>EOB/ERA Check Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="apply-payment">
+                    <td class="dateCell"><span>${{data.era.CHECKAMOUNT}}</span></td>
+                    <td class="dateCell"><span>{{data.era.CHECKNUMBER}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+            <a type="button" style="margin-bottom: 15px;" [routerLink]="['/era/view/'+data.era.ERAID]" target="_blank"
+                class="btn btn-success btn-sm pull-right mb-10 ">View EOB/ERA</a>
+    </div>
+    </div>
+    <div class="col-lg-12 newRow">
+        <button type="button" class="btn btn-default btn-sm pull-right ml-2" (click)="goBack()">Cancel</button>
+        <button type="button" id="AppyBtn" class="btn btn-primary btn-sm pull-right ml-2" [disabled]="true"
+            (click)="onApply()">Apply</button>
+        <button type="button" id="autoApplyBtn" class="btn btn-primary btn-sm pull-right ml-2" [disabled]="true"
+            (click)="onAutoPost()">Auto Post</button>
+    </div>
+
+<div class="row" >
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12 pt-20">
+                <div *ngIf="(data.eraClaims && data.eraClaims.length>0)">
+                    <table class="table table-hover table-striped table-bordered dataTable dataTableEraClaims"
+                        width="100%">
+                        <thead>
+                            <tr>
+                                <th [style.visibility]="canSelectAll()?'visible':'hidden'"></th>
+                                <th></th>
+                                <th>Claim No</th>
+                                <th>DOS</th>
+                                <th>CPT Code</th>
+                                <th>Line Charge</th>
+                                <th>Payment</th>
+                                <th>Adjustment</th>
+                                <th>Patient Responsibility</th>
+                                <th>Status</th>
+                                <th>Posted Date</th>
+                                <th>Payer Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let claim of data.eraClaims">
+                                <td [style.visibility]="claim.CLAIMPOSTEDSTATUS==='U'?'visible':'hidden'"></td>
+                                <td>{{claim.CLAIMNO}}</td>
+                                <td>
+                                    <a *ngIf="!isMismatched(claim.PATACCOUNT)" target="_blank"
+                                        [routerLink]="['/Patient/Demographics/ClaimDetail/'+getEncodedUrl(claim.CLAIMNO,claim.PATACCOUNT,claim.PATFIRSTNAME,claim.PATLASTNAME)]">
+                                        {{claim.CLAIMNO}}
+                                    </a>
+                                    <span *ngIf="isMismatched(claim.PATACCOUNT)">{{claim.CLAIMNO}}</span>
+                                </td>
+                                <td>{{claim.BEGINSERVICEDATE | date:'MM/dd/yyyy'}}</td>
+                                <td>{{claim.PROCCODE}}</td>
+                                <td>${{claim.BILLEDAMOUNT}}</td>
+                                <td>${{claim.PROVIDERPAID}}</td>
+                                <td>${{getAdjustmentAmount(claim.ADJAMT1,claim.ADJAMT2)}}</td>
+                                <td>${{claim.PATIENTRESPONSIBILITY}}</td>
+                                <td>{{claim.CLAIMPOSTEDSTATUS}}</td>
+                                <td>{{claim.POSTEDDATE | date:'MM/dd/yyyy'}}</td>
+                                <td>{{data.era.PAYERNAME}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

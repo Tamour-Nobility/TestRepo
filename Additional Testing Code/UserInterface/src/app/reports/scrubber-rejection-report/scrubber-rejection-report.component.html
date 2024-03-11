@@ -1,0 +1,136 @@
+<div>
+  <div class="row">
+    <div class="col-lg-7">
+      <h3 style="color: black;">Scrubber Rejection Report</h3>
+      <form [formGroup]="SearchForm">
+        <div class="row">
+          <div class="form-group col-lg-3">
+            <label class="control-label">Practices<span class="text-danger">*</span></label>
+            <select class="form-control" formControlName="PracCode" (change)="onchangePractices($event.target.value)">
+              <option value="0" disabled>Select Practice</option>
+              <option *ngFor="let c of listPracticesList" [value]="c.Id">{{c.Name}}</option>
+            </select>
+          </div>
+          <div class="col-sm-3 col-md-3 col-lg-3">
+            <div class="form-group">
+              <label class="control-label" for="status">From - To<span class="text-danger">*</span></label>
+              <my-date-range-picker [options]="myDateRangePickerOptions" [placeholder]="'MM/DD/YYYY'"
+                componentDisabled="true" (dateRangeChanged)="onDateChanged($event)" formControlName="DOSRange">
+              </my-date-range-picker>
+            </div>
+          </div>
+        </div>
+      </form>
+      <button class="btn btn-primary btn-sm pull-right" type="submit" (click)="onSearch()">Search</button>
+      <button type="button" class="btn btn-white pull-right ml-2 btn-sm" (click)="onClear()">Clear</button>
+    </div>
+    <div class="col-lg-5">
+      <h3 style="color: black;">Rejection Count Summary</h3>
+      <div *ngIf="showHistory">
+        <table class="table table-hover dataTable" width="90%">
+          <thead>
+            <tr>
+              <th>Reject Reason</th>
+              <th>Count</th>
+              <!-- <th>Charges</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let rejectioncount of ScrubberRejectionCount | slice:0:5">
+              <td>{{rejectioncount.RejectionReason}}</td>
+              <td>{{rejectioncount.RejectionReasonCount}}</td>
+              <!-- <td>{{rejectioncount.TotalChargeAmount}}</td> -->
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-right mt10"><a (click)="patientAttachments.show()"><i class="fa fa-paperclip"></i>Detail
+            Summary</a>
+        </div>
+        <div class="modal fade" bsModal #patientAttachments="bs-modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="patientAttachments.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Rejections Details Summary</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="table-responsive">
+                    <div *ngIf="showHistory">
+                      <table 
+                        class="table table-hover table-striped table-bordered DataTable ScrubberRejectionCountDetail"
+                        width="100%">
+                        <thead>
+                          <tr>
+                            <th>Reject Reason</th>
+                            <th >Count</th>
+                            <!-- <th>Charges</th> -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let rejectioncount of ScrubberRejectionCount">
+                            <tr>
+                              <td>{{rejectioncount.RejectionReason}}</td>
+                              <td>{{rejectioncount.RejectionReasonCount}}</td>
+                              <!-- <td>{{rejectioncount.TotalChargeAmount}}</td> -->
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                      <br><br>
+                      <td style="text-align:right;"><b>Total Number of Claims : {{ totalClaim }}</b></td>
+                      <br>
+                      <td><b>Rejected Charge Amount : ${{ totalChargeAmountSum }}</b></td>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 pt-20">
+      <div *ngIf="showHistory">
+        <table class="table table-hover table-striped table-bordered dataTable scrubberrejectionhistory" width="100%">
+          <thead>
+            <tr>
+              <th>Practice Code</th>
+              <th>Practice Name</th>
+              <th>Rejection Date</th>
+              <th>Account Number</th>
+              <th>Patient Name</th>
+              <th>Claim Number</th>
+              <th>Date of Service</th>
+              <th>Charge Amount</th>
+              <th>Rejection Reason</th>
+              <th>Insurance Name</th>
+              <!-- <th>Status</th> -->
+              <th>Action Taken</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let rejection of ScrubberRejectionReport ">
+              <td>{{rejection.PracticeCode}}</td>
+              <td>{{rejection.PracticeName}}</td>
+              <td>{{rejection.RejectionDate | date : "medium"}}</td>
+              <td>{{rejection.AccountNumber}}</td>
+              <td>{{rejection.PatientName}}</td>
+              <td>{{rejection.ClaimNumber}}</td>
+              <td>{{rejection.DateOfService | date:'MM/dd/yyyy'}}</td>
+              <td>${{rejection.Chargeamount}}</td>
+              <td>{{rejection.RejectionReason}}</td>
+              <td>{{rejection.InsuranceName}}</td>
+              <!-- <td>{{rejection.status}}</td> -->
+              <td>{{rejection.ActionTaken}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
