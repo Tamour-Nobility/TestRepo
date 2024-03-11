@@ -1,0 +1,13 @@
+|Monday|October|===============****STATS****===============|ERA Import Service|
+User Request Recieved Process Started at this time:10/16/2023 11:43:06 AM
+Username:	HZ1
+Practice_Code:	1011000
+New Files:	0
+Status:	Failed
+FTP_EXCEPTION:	PracticeCode Not Found
+Stats Migration Store Procedure Start For 1 Time.
+Stats Migration Store Procedure Start at:10/16/2023 11:43:08 AM
+SQL Connection Open Successfully!
+SQL Connection Close Successfully!
+Stats Migration Store Procedure End at:10/16/2023 11:43:09 AM
+|2023|===============*******END*******===============|Date:10/16/2023 11:43:09 AM|
