@@ -1,0 +1,151 @@
+1. 💾 SQL Server Table
+Create a table to store user signatures:
+
+sql
+Copy code
+CREATE TABLE UserSignatures (
+    Id INT PRIMARY KEY IDENTITY,
+    UserId INT NOT NULL,
+    SignatureImage VARBINARY(MAX) NOT NULL,
+    CreatedAt DATETIME DEFAULT GETDATE()
+)
+You may store metadata like FormId, SignedBy, SignatureType as needed.
+
+
+
+2. 📄 View (Razor Form)
+Create a form with SignaturePad:
+
+View: SignForm.cshtml
+
+html
+Copy code
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>E-Signature Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+</head>
+<body>
+    <form id="signatureForm">
+        <label>Name:</label>
+        <input type="text" name="UserName" required />
+        <br />
+
+        <canvas id="signatureCanvas" width="400" height="150" style="border:1px solid #ccc;"></canvas>
+        <br />
+        <button type="button" id="clearButton">Clear</button>
+        <button type="submit">Submit</button>
+
+        <input type="hidden" name="SignatureImage" id="SignatureImage" />
+    </form>
+
+    <script>
+        const canvas = document.getElementById('signatureCanvas');
+        const signaturePad = new SignaturePad(canvas);
+        document.getElementById("clearButton").addEventListener("click", () => signaturePad.clear());
+
+        document.getElementById("signatureForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            if (signaturePad.isEmpty()) {
+                alert("Please provide a signature.");
+                return;
+            }
+            const dataURL = signaturePad.toDataURL("image/png");
+            document.getElementById("SignatureImage").value = dataURL;
+
+            fetch('@Url.Action("SaveSignature", "Signature")', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    UserName: this.UserName.value,
+                    SignatureImage: dataURL
+                })
+            })
+            .then(res => res.json())
+            .then(res => {
+                alert(res.message);
+                if (res.success) signaturePad.clear();
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+3. 📦 ViewModel
+csharp
+Copy code
+public class SignatureViewModel
+{
+    public string UserName { get; set; }
+    public string SignatureImage { get; set; } // Base64 string from frontend
+}
+
+
+
+4. 🧠 Controller
+csharp
+Copy code
+public class SignatureController : Controller
+{
+    private readonly string _connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+    [HttpGet]
+    public ActionResult SignForm()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public JsonResult SaveSignature(SignatureViewModel model)
+    {
+        if (string.IsNullOrEmpty(model.SignatureImage))
+            return Json(new { success = false, message = "No signature data." });
+
+        try
+        {
+            // Remove the data URL header
+            var base64Data = Regex.Replace(model.SignatureImage, "^data:image\\/png;base64,", string.Empty);
+            byte[] imageBytes = Convert.FromBase64String(base64Data);
+
+            using (var conn = new SqlConnection(_connectionString))
+            using (var cmd = new SqlCommand("INSERT INTO UserSignatures (UserId, SignatureImage) VALUES (@UserId, @SignatureImage)", conn))
+            {
+                cmd.Parameters.AddWithValue("@UserId", 1); // Replace with actual user id
+                cmd.Parameters.Add("@SignatureImage", SqlDbType.VarBinary).Value = imageBytes;
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+            return Json(new { success = true, message = "Signature saved successfully." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = "Error: " + ex.Message });
+        }
+    }
+}
+
+
+5. 🔗 Web.Config (Add Connection String)
+xml
+Copy code
+<connectionStrings>
+  <add name="DefaultConnection" connectionString="Server=.;Database=YourDb;Trusted_Connection=True;" providerName="System.Data.SqlClient" />
+</connectionStrings>
+
+
+6. 📄 Rendering Signature on PDF (Optional)
+When you generate a PDF using libraries like iTextSharp, use the byte array directly:
+
+csharp
+Copy code
+Image signature = Image.GetInstance(signatureByteArray);
+signature.ScaleAbsolute(100f, 50f);
+signature.SetAbsolutePosition(400f, 50f);
+document.Add(signature);
+
+
