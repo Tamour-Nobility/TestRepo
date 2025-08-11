@@ -1,0 +1,216 @@
+<template>
+  <div class="card bg-white border-0 rounded-3 mb-4">
+    <div class="card-body p-4">
+      <form class="mb-4">
+        <div class="row">
+          <div class="col-lg-3 col-sm-6">
+            <div class="form-group mb-4">
+              <label class="label text-secondary">Invoice ID</label>
+              <input
+                type="text"
+                class="form-control h-55"
+                placeholder="Enter Invoice id"
+              />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <div class="form-group mb-4">
+              <label class="label text-secondary">Status</label>
+              <select
+                class="form-select form-control h-55"
+                aria-label="Default select example"
+              >
+                <option selected>Status</option>
+                <option value="1">Paid</option>
+                <option value="2">Unpaid</option>
+                <option value="3">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <div class="form-group mb-4">
+              <label class="label text-secondary">Date</label>
+              <input type="date" class="form-control h-55" />
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <div class="form-group mb-4">
+              <label class="label text-secondary">Due Date</label>
+              <input type="date" class="form-control h-55" />
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <div class="mb-0 border p-4 rounded-3 position-relative">
+              <p class="mb-4 text-secondary fw-medium">From:</p>
+              <p class="mb-1 fw-medium text-secondary">Olivia John</p>
+              <p class="mb-1 text-body">olivia@trezo.com</p>
+              <p class="mb-1 text-body">4545 Seth Street Ballinger, TX 78965</p>
+              <p class="mb-0 text-body">+1 444 556 8899</p>
+              <button
+                type="submit"
+                class="btn border-primary text-primary position-absolute hover-bg"
+                style="right: 24px; top: 24px"
+              >
+                <i class="ri-pencil-line"></i>
+                Change
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <div
+              class="mt-4 mt-md-0 border p-4 rounded-3 position-relative h-md-100"
+            >
+              <p class="mb-4 text-secondary fw-medium">To:</p>
+
+              <button
+                type="submit"
+                class="btn border-primary text-primary position-absolute hover-bg"
+                style="right: 24px; top: 24px"
+              >
+                <i class="ri-add-line"></i>
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="default-table-area all-products">
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Item Description</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Total</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-body">1</td>
+                <td>
+                  <input
+                    type="text"
+                    class="form-control h-55"
+                    placeholder="Enter item name"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control h-55"
+                    placeholder="1"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control h-55"
+                    placeholder="Enter price"
+                  />
+                </td>
+                <td class="text-body">$0.00</td>
+                <td>
+                  <button
+                    class="ps-0 border-0 bg-transparent lh-1 position-relative top-2"
+                  >
+                    <i class="material-symbols-outlined fs-16 text-danger">
+                      delete
+                    </i>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <button class="btn btn-primary">
+                    <i class="ri-add-line text-white me-1"></i>
+                    Add Item
+                  </button>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <label class="text-secondary label">Discount(%)</label>
+                  <input
+                    type="text"
+                    class="form-control h-55"
+                    placeholder="0.00"
+                  />
+                </td>
+                <td>
+                  <label class="text-secondary label">Tax(%)</label>
+                  <input
+                    type="text"
+                    class="form-control h-55"
+                    placeholder="0.00"
+                  />
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-body">Sub total:</td>
+                <td class="text-body">$0.00</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-body">Tax (5%)</td>
+                <td class="text-body">$0.00</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-body">Discount (0%)</td>
+                <td class="text-body">- $0.00</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="fw-medium text-secondary">Grand Total</td>
+                <td class="text-secondary">$0.00</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+        <button class="btn btn-danger py-2 px-4 fw-medium fs-16 text-white">
+          Cancel
+        </button>
+        <button class="btn btn-primary py-2 px-4 fw-medium fs-16">
+          <i class="ri-add-line text-white fw-medium"></i> Create
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "CreateInvoice",
+});
+</script>
