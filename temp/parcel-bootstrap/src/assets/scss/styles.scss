@@ -1,0 +1,43 @@
+// Import all of Bootstrap's CSS
+@import "bootstrap/scss/bootstrap";
+
+// Other CSS
+@import "../css/sidebar-menu.css";
+@import "../css/simplebar.css";
+@import "../css/apexcharts.css";
+@import "../css/prism.css";
+@import "../css/rangeslider.css";
+@import "../css/sweetalert.min.css";
+@import "../css/quill.snow.css";
+@import "../css/google-icon.css";
+@import "../css/remixicon.css";
+@import "../css/swiper-bundle.min.css";
+@import "../css/fullcalendar.main.css";
+
+// Default variable overrides
+@import "./variables";
+
+// Components
+@import "./components/global";
+@import "./components/sidebar-menu";
+@import "./components/main-content";
+@import "./components/header-area";
+@import "./components/footer-area";
+@import "./components/status-box";
+@import "./components/sales-by-locations";
+@import "./components/default-table";
+@import "./components/pagination";
+@import "./components/calendar";
+@import "./components/chat";
+@import "./components/timeline";
+@import "./components/priceing";
+@import "./components/products";
+@import "./components/rtl";
+@import "./components/dark-mode";
+@import "./components/sidebar-dark";
+@import "./components/header-dark";
+@import "./components/footer-dark";
+@import "./components/card-style";
+@import "./components/card-bg-style";
+@import "./components/fluid-boxed-style";
+@import "./components/landing-page";
