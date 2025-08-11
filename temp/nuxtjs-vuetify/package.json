@@ -1,0 +1,41 @@
+{
+  "name": "trezo-nuxt",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.14",
+    "@fullcalendar/daygrid": "^6.1.14",
+    "@fullcalendar/interaction": "^6.1.14",
+    "@fullcalendar/timegrid": "^6.1.14",
+    "@fullcalendar/vue3": "^6.1.14",
+    "@mdi/font": "^7.4.47",
+    "@vueup/vue-quill": "^1.2.0",
+    "apexcharts": "^3.54.1",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.3",
+    "nuxt": "^3.11.2",
+    "nuxt-swiper": "^1.2.2",
+    "papaparse": "^5.4.1",
+    "quill": "^2.0.2",
+    "remixicon": "^4.2.0",
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.2",
+    "vue3-apexcharts": "^1.7.0",
+    "vue3-carousel-nuxt": "^1.1.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@primevue/nuxt-module": "^4.0.0-rc.2",
+    "@types/papaparse": "^5.3.14",
+    "sass": "^1.77.8",
+    "vite-plugin-vuetify": "^2.0.3",
+    "vuetify": "^3.6.8"
+  }
+}

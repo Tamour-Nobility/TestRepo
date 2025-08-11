@@ -1,0 +1,33 @@
+<template>
+  <div
+    class="breadcrumb-card mb-25 d-md-flex align-items-center justify-space-between"
+  >
+    <h5 class="mb-0">{{ pageTitle }}</h5>
+    <ol class="breadcrumb list-unstyled mt-0 mb-0 pl-0">
+      <li class="breadcrumb-item d-inline-block position-relative">
+        <NuxtLink to="/dashboard" class="d-inline-block position-relative">
+          <i class="material-symbols-outlined"> home </i>
+          Dashboard
+        </NuxtLink>
+      </li>
+      <li
+        v-if="subTitle"
+        class="breadcrumb-item d-inline-block position-relative"
+      >
+        {{ subTitle }}
+      </li>
+      <li class="breadcrumb-item d-inline-block position-relative">
+        {{ pageTitle }}
+      </li>
+    </ol>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "PageTitle",
+  props: ["pageTitle", "subTitle"],
+});
+</script>
