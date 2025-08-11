@@ -1,0 +1,26 @@
+@inherits LayoutComponentBase
+@using trezo_aspnet.Components.Layout
+@using trezo_aspnet.Components.Layout.Admin
+@inject NavigationManager NavigationManager
+
+@code {
+    private string ActiveRoute { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        ActiveRoute = NavigationManager?.Uri ?? string.Empty; // Safe navigation to avoid null
+    }
+}
+
+<body class="boxed-size">
+    <Sidebar ActiveRoute="@ActiveRoute" />
+
+    <div class="container-fluid">
+        <div class="main-content d-flex flex-column">
+            <AdminNavbar />
+            @Body
+            <div class="flex-grow-1"></div>
+            <AdminFooter />
+        </div>
+    </div>
+</body>

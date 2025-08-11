@@ -1,0 +1,1170 @@
+@using Microsoft.AspNetCore.Components.Routing
+
+@code {
+    [Parameter] public string ActiveRoute { get; set; } = string.Empty;
+
+    private bool IsActive(params string[] urls) =>
+    !string.IsNullOrEmpty(ActiveRoute) && urls.Any(url => ActiveRoute.Contains(url, StringComparison.OrdinalIgnoreCase));
+}
+
+<div class="sidebar-area" id="sidebar-area">
+    <div class="logo position-relative">
+        <a href="/" class="d-block text-decoration-none position-relative">
+            <img src="images/logo-icon.png" alt="logo-icon">
+            <span class="logo-text fw-bold text-dark">Trezo</span>
+        </a>
+        <button
+            class="sidebar-burger-menu bg-transparent p-0 border-0 opacity-0 z-n1 position-absolute top-50 end-0 translate-middle-y"
+            id="sidebar-burger-menu">
+            <i data-feather="x"></i>
+        </button>
+    </div>
+
+    <aside id="layout-menu" class="layout-menu menu-vertical menu active" data-simplebar>
+        <ul class="menu-inner">
+            <li class="menu-title small text-uppercase">
+                <span class="menu-title-text">MAIN</span>
+            </li>
+            <li
+                class="menu-item @(IsActive("/dashboard", "/crm", "/project-management", "/lms", "/help-desk", "/analytics", "/crypto", "/sales", "/hospital", "/marketing", "/nft", "/saas", "/real-estate", "/shipment", "/finance", "/hrm", "/school", "/call-center") ? "open" : "")">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">dashboard</span>
+                    <span class="title">Dashboard</span>
+                    <span class="count">5</span>
+                </a>
+
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <NavLink href="/dashboard" class="menu-link">
+                            eCommerce
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="/crm" class="menu-link">
+                            CRM
+                            <span class="hot tag">Hot</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="/project-management" class="menu-link">
+                            Project Management
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/lms" class="menu-link">
+                            LMS
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/help-desk" class="menu-link">
+                            HelpDesk
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/analytics" class="menu-link">
+                            Analytics
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/crypto" class="menu-link">
+                            Crypto
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/sales" class="menu-link">
+                            Sales
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/hospital" class="menu-link">
+                            Hospital
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/marketing" class="menu-link">
+                            Marketing
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/nft" class="menu-link">
+                            NFT
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/saas" class="menu-link">
+                            SaaS
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/real-estate" class="menu-link">
+                            Real Estate
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/shipment" class="menu-link">
+                            Shipment
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/finance" class="menu-link">
+                            Finance
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/hrm" class="menu-link">
+                            HRM
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/school" class="menu-link">
+                            School
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                    <li class="menu-item mb-0">
+                        <NavLink href="/call-center" class="menu-link">
+                            Call Center
+                            <span class="hot tag">New</span>
+                        </NavLink>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">note_stack</span>
+                    <span class="title">Front Pages</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="landing-page" class="menu-link">
+                            Home
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="features" class="menu-link">
+                            Features
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="our-team" class="menu-link">
+                            Our Team
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="faqs" class="menu-link">
+                            FAQ’s
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="contact" class="menu-link">
+                            Contact
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-title small text-uppercase">
+                <span class="menu-title-text">APPS</span>
+            </li>
+
+            <li class="menu-item open">
+                <NavLink href="calendar" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">date_range</span>
+                    <span class="title">Calendar</span>
+                </NavLink>
+            </li>
+
+            <li class="menu-item open">
+                <NavLink href="to-do-list" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">format_list_bulleted</span>
+                    <span class="title">To Do List</span>
+                </NavLink>
+            </li>
+
+            <li class="menu-item open">
+                <NavLink href="contacts" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">contact_page</span>
+                    <span class="title">Contacts</span>
+                </NavLink>
+            </li>
+
+            <li class="menu-item open">
+                <NavLink href="chat" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">chat</span>
+                    <span class="title">Chat</span>
+                </NavLink>
+            </li>
+
+            <li
+                class="menu-item @(IsActive("/inbox", "/compose", "/read-email", "/snoozed", "/draft", "/sent-mail", "/trash-email", "/spam", "/starred", "/important") ? "open" : "")">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">mail</span>
+                    <span class="title">Email</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <NavLink href="inbox" class="menu-link">
+                            Inbox
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="compose" class="menu-link">
+                            Compose
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="read-email" class="menu-link">
+                            Read Email
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="snoozed" class="menu-link">
+                            Snoozed
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="draft" class="menu-link">
+                            Draft
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="sent-mail" class="menu-link">
+                            Sent Mail
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="trash-email" class="menu-link">
+                            Trash
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="spam" class="menu-link">
+                            Spam
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="starred" class="menu-link">
+                            Starred
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="important" class="menu-link">
+                            Important
+                        </NavLink>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item open">
+                <NavLink href="kanban-board" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">space_dashboard</span>
+                    <span class="title">Kanban Board</span>
+                </NavLink>
+            </li>
+
+            <li
+                class="menu-item @(IsActive("/file-manager", "/assets", "/projects", "/personal", "/applications", "/documents", "/media") ? "open" : "")">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">folder</span>
+                    <span class="title">File Manager</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <NavLink href="file-manager" class="menu-link">
+                            My Drive
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="assets" class="menu-link">
+                            Assets
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="projects" class="menu-link">
+                            Projects
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="personal" class="menu-link">
+                            Personal
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="applications" class="menu-link">
+                            Applications
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="documents" class="menu-link">
+                            Documents
+                        </NavLink>
+                    </li>
+                    <li class="menu-item">
+                        <NavLink href="media" class="menu-link">
+                            Media
+                        </NavLink>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-title small text-uppercase">
+                <span class="menu-title-text">PAGES</span>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">shopping_cart</span>
+                    <span class="title">eCommerce</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="products-grid" class="menu-link">
+                            Products Grid
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="products-list" class="menu-link">
+                            Products List
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="product-details" class="menu-link">
+                            Product Details
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="create-product" class="menu-link">
+                            Create Product
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="edit-product" class="menu-link">
+                            Edit Product
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="cart" class="menu-link">
+                            Cart
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="checkout" class="menu-link">
+                            Checkout
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="orders" class="menu-link">
+                            Orders
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="order-details" class="menu-link">
+                            Order Details
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="create-order" class="menu-link">
+                            Create Order
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="order-tracking" class="menu-link">
+                            Order Tracking
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="customers" class="menu-link">
+                            Customers
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="customer-details" class="menu-link">
+                            Customer Details
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="categories" class="menu-link">
+                            Categories
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="sellers" class="menu-link">
+                            Sellers
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="seller-details" class="menu-link">
+                            Seller Details
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="create-seller" class="menu-link">
+                            Create Seller
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="reviews" class="menu-link">
+                            Reviews
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="refunds" class="menu-link">
+                            Refunds
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">handshake</span>
+                    <span class="title">CRM</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="contacts-2" class="menu-link">
+                            Contacts
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="customers-2" class="menu-link">
+                            Customers
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="leads" class="menu-link">
+                            Leads
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="deals" class="menu-link">
+                            Deals
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">content_paste</span>
+                    <span class="title">Project Management</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="project-overview" class="menu-link">
+                            Project Overview
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="project-list" class="menu-link">
+                            Project List
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="create-project" class="menu-link">
+                            Create Project
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="clients" class="menu-link">
+                            Clients
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="teams" class="menu-link">
+                            Teams
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="kanban-board-2" class="menu-link">
+                            Kanvan Board
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="user" class="menu-link">
+                            User
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">auto_stories</span>
+                    <span class="title">LMS</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="courses-list" class="menu-link">
+                            Courses List
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="course-details" class="menu-link">
+                            Course Details
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="lesson-preview" class="menu-link">
+                            Lesson Preview
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="create-course" class="menu-link">
+                            Create Course
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="edit-course" class="menu-link">
+                            Edit Course
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="instructors" class="menu-link">
+                            Instructors
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">support</span>
+                    <span class="title">Help Desk</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="tickets" class="menu-link">
+                            Tickets
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="ticket-details" class="menu-link">
+                            Ticket Details
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="agents" class="menu-link">
+                            Agents
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="reports" class="menu-link">
+                            Reports
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">local_activity</span>
+                    <span class="title">Events</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="events" class="menu-link">
+                            Events
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="events-list" class="menu-link">
+                            Events List
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="event-details" class="menu-link">
+                            Event Details
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="create-an-event" class="menu-link">
+                            Create An Event
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="edit-an-event" class="menu-link">
+                            Edit An Event
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">share</span>
+                    <span class="title">Social</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="profile" class="menu-link">
+                            Profile
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="settings" class="menu-link">
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">content_paste</span>
+                    <span class="title">Invoice</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="invoice-list" class="menu-link">
+                            Invoice List
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="invoice-details" class="menu-link">
+                            Invoice Details
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="create-invoice" class="menu-link">
+                            Create Invoice
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="edit-invoice" class="menu-link">
+                            Edit Invoice
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">group_add</span>
+                    <span class="title">Users</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="team-members" class="menu-link">
+                            Team Members
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="users-list" class="menu-link">
+                            Users List
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="add-user" class="menu-link">
+                            Add User
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">account_circle</span>
+                    <span class="title">Profile</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="user-profile" class="menu-link">
+                            User Profile
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="teams-2" class="menu-link">
+                            Teams
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="my-projects" class="menu-link">
+                            Projects
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="starter" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">star</span>
+                    <span class="title">Starter</span>
+                </a>
+            </li>
+
+            <li class="menu-title small text-uppercase">
+                <span class="menu-title-text">MODULES</span>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">add_reaction</span>
+                    <span class="title">Icons</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="material-icons" class="menu-link">
+                            Material Icons
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="feathericon" class="menu-link">
+                            Feathericon
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="remixicon" class="menu-link">
+                            Remixicon
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">gallery_thumbnail</span>
+                    <span class="title">UI Elements</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="alerts" class="menu-link">
+                            Alerts
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="avatar" class="menu-link">
+                            Avatar
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="buttons" class="menu-link">
+                            Buttons
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="badges" class="menu-link">
+                            Badges
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="cards" class="menu-link">
+                            Cards
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="carousels" class="menu-link">
+                            Carousels
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="dropdowns" class="menu-link">
+                            Dropdowns
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="grids" class="menu-link">
+                            Grids
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="images" class="menu-link">
+                            Images
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="list" class="menu-link">
+                            List
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="modals" class="menu-link">
+                            Modals
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="navs" class="menu-link">
+                            Navs
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="paginations" class="menu-link">
+                            Paginations
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="popover-tooltips" class="menu-link">
+                            Popover Tooltips
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="progess" class="menu-link">
+                            Progess
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="spinners" class="menu-link">
+                            Spinners
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="tabs" class="menu-link">
+                            Tabs
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="accoridions" class="menu-link">
+                            Accoridions
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="date-time-picker" class="menu-link">
+                            Date/Time Picker
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="videos" class="menu-link">
+                            Videos
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">table</span>
+                    <span class="title">Tables</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="basic-table" class="menu-link">
+                            Basic Table
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="data-tables" class="menu-link">
+                            Data Table
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">clarify</span>
+                    <span class="title">Forms</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="basic-elements" class="menu-link">
+                            Basic Elements
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="advanced-elements" class="menu-link">
+                            Advanced Elements
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="validation" class="menu-link">
+                            Validation
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="wizard" class="menu-link">
+                            Wizard
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="editors" class="menu-link">
+                            Editors
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="file-upload" class="menu-link">
+                            File Upload
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="apex-charts" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">donut_large</span>
+                    <span class="title">Apex Charts</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">lock</span>
+                    <span class="title">Authentication</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="login" class="menu-link">
+                            Login
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="register" class="menu-link">
+                            Register
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="reset-password" class="menu-link">
+                            Reset Password
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="forget-password" class="menu-link">
+                            Forget Password
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="lock-screen" class="menu-link">
+                            Lock Screen
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="logout" class="menu-link">
+                            Log Out
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="confirm-mail" class="menu-link">
+                            Confirm Mail
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">featured_video</span>
+                    <span class="title">Extra Pages</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="pricing-plan" class="menu-link">
+                            Pricing Plan
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="faq" class="menu-link">
+                            FAQ
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="timeline" class="menu-link">
+                            Timeline
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="animation" class="menu-link">
+                            Animation
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="clip-board" class="menu-link">
+                            Clip Board
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="drag-drop" class="menu-link">
+                            Drag & Drop
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="range-slider" class="menu-link">
+                            Range Slider
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="ratings" class="menu-link">
+                            Ratings
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="toasts" class="menu-link">
+                            Toasts
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="check-radio" class="menu-link">
+                            Check & Radio
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="sweet-alarts" class="menu-link">
+                            Sweet Alarts
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="select" class="menu-link">
+                            Select
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="scrollbar" class="menu-link">
+                            Scrollbar
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="typography" class="menu-link">
+                            Typography
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="gallery" class="menu-link">
+                            Gallery
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="search" class="menu-link">
+                            Search
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="blank-page" class="menu-link">
+                            Blank Page
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">chat_error</span>
+                    <span class="title">Errors</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="404-error-page" class="menu-link">
+                            404 Error Page
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="internal-error" class="menu-link">
+                            Internal Error
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="widgets" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">widgets</span>
+                    <span class="title">Widgets</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="google-map" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">map</span>
+                    <span class="title">Google Map</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="notification" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">notifications</span>
+                    <span class="title">Notification</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="members" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">group</span>
+                    <span class="title">Members</span>
+                </a>
+            </li>
+
+            <li class="menu-title small text-uppercase">
+                <span class="menu-title-text">OTHERS</span>
+            </li>
+
+            <li class="menu-item">
+                <a href="my-profile" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">account_circle</span>
+                    <span class="title">My Profile</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">settings</span>
+                    <span class="title">Settings</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="account-settings" class="menu-link">
+                            Account Settings
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="change-password" class="menu-link">
+                            Change Password
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="connections" class="menu-link">
+                            Connections
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="connections" class="menu-link">
+                            Connections
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="privacy-policy" class="menu-link">
+                            Privacy Policy
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="terms-conditions" class="menu-link">
+                            Terms & Conditions
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle active">
+                    <span class="material-symbols-outlined menu-icon">keyboard_arrow_down</span>
+                    <span class="title">Multi Level Menu</span>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item after-sub-menu menu-level">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <span class="title">Level One</span>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="#" class="menu-link">
+                                    Level Three
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu-item">
+                <a href="logout" class="menu-link">
+                    <span class="material-symbols-outlined menu-icon">logout</span>
+                    <span class="title">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+</div>

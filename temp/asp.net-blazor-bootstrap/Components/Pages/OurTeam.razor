@@ -1,0 +1,258 @@
+@page "/our-team"
+@layout MainLayout
+@using trezo_aspnet.Components.Shared
+@inject IJSRuntime JS
+
+@code {
+    private bool _isInitialized = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender || !_isInitialized)
+        {
+            await JS.InvokeVoidAsync("initializeSwiper");
+            _isInitialized = true;
+        }
+    }
+}
+
+<div class="page-banner-area" id="home">
+    <div class="container position-relative z-1">
+        <div class="banner-content text-center mb-0">
+            <h1 class="fs-60 mb-0">Our Team</h1>
+        </div>
+
+        <img src="images/landing/shape-5.png" class="shape-5" alt="shape">
+        <img src="images/landing/shape-6.png" class="shape-6" alt="shape">
+    </div>
+</div>
+
+<div class="our-team-area position-relative z-1 pt-150" id="ourteam">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 mb-lg-5">
+            <div class="section-title ms-0 text-start mw-630 mb-0">
+                <span class="top-title">
+                    <span>Our Team</span>
+                </span>
+                <h2>Introducing Our Exceptional Team. Meet the Minds Driving Our Success</h2>
+            </div>
+
+            <div class="team-controller d-flex gap-3">
+                <div class="controller-icon prev">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                <div class="controller-icon next">
+                    <i class="ri-arrow-right-line"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="swiper team-slide">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="our-team-single-item">
+                        <div class="team-img">
+                            <img src="images/landing/team-1.jpg" alt="team">
+                        </div>
+                        <div class="team-content d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3>Michael Johnson</h3>
+                                <span>CEO</span>
+                            </div>
+                            <ul class="ps-0 mb-0 list-unstyled d-flex flex-wrap gap-3">
+                                <li>
+                                    <a href="https://www.facebook.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.twitter.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-twitter-x-line"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.linkedin.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-linkedin-fill"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="our-team-single-item">
+                        <div class="team-img">
+                            <img src="images/landing/team-2.jpg" alt="team">
+                        </div>
+                        <div class="team-content d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3>Emily Davis</h3>
+                                <span>Project Manager</span>
+                            </div>
+                            <ul class="ps-0 mb-0 list-unstyled d-flex flex-wrap gap-3">
+                                <li>
+                                    <a href="https://www.facebook.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.twitter.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-twitter-x-line"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.linkedin.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-linkedin-fill"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="our-team-single-item">
+                        <div class="team-img">
+                            <img src="images/landing/team-3.jpg" alt="team">
+                        </div>
+                        <div class="team-content d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3>Daniel Lee</h3>
+                                <span>Sales Team Lead</span>
+                            </div>
+                            <ul class="ps-0 mb-0 list-unstyled d-flex flex-wrap gap-3">
+                                <li>
+                                    <a href="https://www.facebook.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.twitter.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-twitter-x-line"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.linkedin.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-linkedin-fill"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="our-team-single-item">
+                        <div class="team-img">
+                            <img src="images/landing/team-1.jpg" alt="team">
+                        </div>
+                        <div class="team-content d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3>Michael Johnson</h3>
+                                <span>CEO</span>
+                            </div>
+                            <ul class="ps-0 mb-0 list-unstyled d-flex flex-wrap gap-3">
+                                <li>
+                                    <a href="https://www.facebook.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.twitter.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-twitter-x-line"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.linkedin.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-linkedin-fill"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="our-team-single-item">
+                        <div class="team-img">
+                            <img src="images/landing/team-2.jpg" alt="team">
+                        </div>
+                        <div class="team-content d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3>Emily Davis</h3>
+                                <span>Project Manager</span>
+                            </div>
+                            <ul class="ps-0 mb-0 list-unstyled d-flex flex-wrap gap-3">
+                                <li>
+                                    <a href="https://www.facebook.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.twitter.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-twitter-x-line"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.linkedin.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-linkedin-fill"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="our-team-single-item">
+                        <div class="team-img">
+                            <img src="images/landing/team-3.jpg" alt="team">
+                        </div>
+                        <div class="team-content d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3>Daniel Lee</h3>
+                                <span>Sales Team Lead</span>
+                            </div>
+                            <ul class="ps-0 mb-0 list-unstyled d-flex flex-wrap gap-3">
+                                <li>
+                                    <a href="https://www.facebook.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.twitter.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-twitter-x-line"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.linkedin.com/" target="_blank"
+                                        class="text-decoration-none fs-20 text-primary">
+                                        <i class="ri-linkedin-fill"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <img src="images/landing/shape-1.png" class="shape shape-3" alt="shape">
+    <img src="images/landing/shape-2.png" class="shape shape-4" alt="shape">
+</div>
+
+<Unlock />
