@@ -1,0 +1,6 @@
+{
+  "version": "1.6.0",
+  "devDependencies": {
+    "tailwindcss": "^3.4.13"
+  }
+}
