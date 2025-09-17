@@ -1,0 +1,24 @@
+ts file changes..
+
+import { GvarsService } from '../services/G_vars/gvars.service';
+getPractices: any[] = [];
+private gv: GvarsService, //.add this in constructor parameters..
+
+ this.getPractices=this.gv.currentUser.Practices
+  this.getPractices = [
+    { PracticeCode: null, PracticeLabel: 'Select' },
+    ...this.gv.currentUser.Practices
+  ];
+
+
+html file changes..
+
+  <div class="col-sm-3 col-md-3 col-lg-3">
+                        <div class="form-group">
+                          <label class="control-label" for="Prac">Practice</label><span style="color:red">*</span>
+                          <ngx-select formControlName="Practice_Code" [items]="getPractices"
+                            optionTextField="PracticeLabel" optionValueField="PracticeCode" [allowClear]="false"
+                            placeholder="Select" (ngModelChange)="getPracInfo($event)">
+                          </ngx-select>
+                        </div>
+                      </div>
